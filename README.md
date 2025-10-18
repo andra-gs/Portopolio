@@ -1,7 +1,7 @@
 # Portopolio
 a simple portopolio that make my head blow
 ---
-# Progres
+# Progress
 - [x] Home (perfect)
 - [x] About me (perfect)
 - [x] Skills (possible to make it look better)
