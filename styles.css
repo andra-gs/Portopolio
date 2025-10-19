@@ -50,7 +50,7 @@
     #home { 
       position: relative;
       background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-              url('/image/pexels-goumbik-317377.jpg') center/cover no-repeat;
+              url('image/pexels-goumbik-317377.jpg') center/cover no-repeat;
       background-size: cover;
     }
 
@@ -58,7 +58,7 @@
     #about {
     position: relative;
     background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-              url('/image/pexels-pixabay-434337.jpg') center/cover no-repeat;
+              url('image/pexels-pixabay-434337.jpg') center/cover no-repeat;
     background-size: cover; 
     }
 
@@ -148,12 +148,12 @@
 
     #project {
       position: relative;
-    background: url('/image/pexels-pixabay-434337.jpg') center/cover no-repeat;
+    background: url('image/pexels-pixabay-434337.jpg') center/cover no-repeat;
     background-size: cover;
     }
     #contact {
         position: relative;
-    background: url('/image/contak.png') center/cover no-repeat;
+    background: url('image/contak.png') center/cover no-repeat;
     background-size: cover;
     }
 
@@ -302,7 +302,7 @@
 /* EXPERIENCE SECTION */
 .experience-section {
   position: relative;
-  background: url('/image/Untitled\ design.png') center/cover no-repeat;
+  background: url('image/Untitled\ design.png') center/cover no-repeat;
   color: white;
   padding: 100px 0;
   text-align: center;
@@ -555,4 +555,5 @@
 
 .social-icons a:hover {
   color: green;
+
 }
