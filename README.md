@@ -1,5 +1,4 @@
 # Portopolio
-a simple portopolio that make my head blow
 ---
 # Progress
 - [x] Home (perfect)
