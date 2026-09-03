@@ -3,140 +3,105 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Andra Nooryanto — Network Security</title>
+<title>Adrian Dabrowski — Web Designer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          tiffany: '#81D8D0',
-        },
-        fontFamily: {
-          sans: ['Inter', 'sans-serif'],
-        },
-        animation: {
-          'fade-up': 'fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-          'spin-slow': 'spin 10s linear infinite',
-        },
-        keyframes: {
-          fadeUp: {
-            '0%': { opacity: 0, transform: 'translateY(20px) scale(0.98)' },
-            '100%': { opacity: 1, transform: 'translateY(0) scale(1)' },
-          },
-        },
-      },
-    },
-  };
-</script>
 <style>
-  * {
+  /* ============ TOKENS ============ */
+  :root {
+    --tiffany: #81D8D0;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --glass-bg: rgba(30, 30, 30, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.08);
+  }
+
+  /* ============ RESET ============ */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html {
+    scroll-behavior: smooth;
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-  *::-webkit-scrollbar {
-    width: 0px;
-    background: transparent;
-  }
-
-  html {
-    scroll-behavior: smooth;
-  }
-
+  *::-webkit-scrollbar { width: 0px; background: transparent; }
   body {
     background-color: #000000;
-    font-family: 'Inter', sans-serif;
     color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { text-decoration: none; color: inherit; }
+  button { font-family: inherit; cursor: pointer; }
+  ul { list-style: none; }
+  ::selection { background-color: #81D8D0; color: #000000; }
+  ::-moz-selection { background-color: #81D8D0; color: #000000; }
+
+  /* ============ HELPERS ============ */
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 10;
+  }
+  @media (min-width: 768px) { .container { padding: 0 40px; } }
+
+  .eyebrow {
+    color: var(--tiffany);
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    margin-bottom: 12px;
   }
 
-  ::selection {
-    background-color: #81D8D0;
-    color: #000000;
+  /* ============ ANIMATIONS ============ */
+  @keyframes fadeUp {
+    0% { opacity: 0; transform: translateY(20px) scale(0.98); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
   }
-
-  .ios-glass {
-    background: rgba(30, 30, 30, 0.4);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-  }
-
-  .tiffany-glow {
-    box-shadow: 0 0 40px 0 rgba(129, 216, 208, 0.25);
-  }
-
   .fade-in-el {
     opacity: 0;
-    animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: fadeUp 0.9s var(--ease) forwards;
   }
 
-  .card-transition {
-    transition: background-color 400ms cubic-bezier(0.16, 1, 0.3, 1),
-                transform 400ms cubic-bezier(0.16, 1, 0.3, 1),
-                border-color 400ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .card-image-hover {
-    transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .group:hover .card-image-hover {
-    transform: scale(1.03);
-  }
-
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-  .animate-spin-slow {
-    animation: spin 10s linear infinite;
-  }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .spin-slow { animation: spin 10s linear infinite; }
 
   @keyframes ping {
-    75%, 100% { transform: scale(2); opacity: 0; }
+    75%, 100% { transform: scale(2.2); opacity: 0; }
   }
-  .animate-ping-slow {
-    animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-  }
+  .ping-anim { animation: ping 2s cubic-bezier(0,0,0.2,1) infinite; }
 
-  /* iOS-style toggle */
-  .ios-toggle {
-    width: 42px;
-    height: 24px;
-    background-color: rgba(255, 255, 255, 0.15);
-    border-radius: 9999px;
-    position: relative;
-    transition: background-color 300ms ease;
-    cursor: pointer;
-  }
-  .ios-toggle::after {
-    content: '';
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 20px;
-    height: 20px;
-    background-color: #ffffff;
-    border-radius: 9999px;
-    transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  input:checked + .ios-toggle {
-    background-color: #81D8D0;
-  }
-  input:checked + .ios-toggle::after {
-    transform: translateX(18px);
-  }
+  @keyframes shimmer { 100% { transform: translateX(100%); } }
 
-  /* Skeleton loading */
-  .skeleton {
+  /* ============ GLASSMORPHISM ============ */
+  .ios-glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+  }
+  .card {
+    transition: background-color 400ms var(--ease), transform 400ms var(--ease), border-color 400ms var(--ease);
+  }
+  .tiffany-glow { box-shadow: 0 0 40px 0 rgba(129, 216, 208, 0.25); }
+
+  /* ============ SKELETON SYSTEM ============ */
+  /* Every loading section is written twice: a .skel-block (shimmer placeholders)
+     and a .real-block (actual content, hidden until load completes). One shared
+     class swap after a short delay reveals real content sitewide. */
+  .skel-hidden { display: none !important; }
+
+  .skel-bar {
+    height: 12px;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.06);
     position: relative;
     overflow: hidden;
-    background-color: rgba(255, 255, 255, 0.06);
   }
-  .skeleton::after {
+  .skel-bar::after {
     content: '';
     position: absolute;
     inset: 0;
@@ -151,379 +116,687 @@
     );
     animation: shimmer 1.6s infinite;
   }
-  @keyframes shimmer {
-    100% { transform: translateX(100%); }
+  .skel-circle {
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.06);
+    position: relative;
+    overflow: hidden;
   }
-  .skeleton-hidden {
-    display: none;
+  .skel-circle::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 20%, rgba(129,216,208,0.08) 50%, rgba(255,255,255,0.06) 80%, transparent 100%);
+    animation: shimmer 1.6s infinite;
+  }
+  .skel-block-card {
+    border-radius: 24px;
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--glass-border);
+    position: relative;
+    overflow: hidden;
+  }
+  .skel-block-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.05) 20%, rgba(129,216,208,0.08) 50%, rgba(255,255,255,0.05) 80%, transparent 100%);
+    animation: shimmer 1.8s infinite;
   }
 
-  .scroll-mt {
-    scroll-margin-top: 120px;
+  /* ============ BACKGROUND LAYER ============ */
+  .bg-layer { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .blob-1 {
+    position: absolute; top: -160px; left: -160px;
+    width: 600px; height: 600px; border-radius: 50%;
+    background: var(--tiffany); opacity: 0.07; filter: blur(120px);
+    mix-blend-mode: screen;
+  }
+  .blob-2 {
+    position: absolute; bottom: -160px; right: -160px;
+    width: 500px; height: 500px; border-radius: 50%;
+    background: #1e3a8a; opacity: 0.1; filter: blur(120px);
+    mix-blend-mode: screen;
   }
 
-  ::-moz-selection {
-    background-color: #81D8D0;
-    color: #000000;
+  /* ============ NAV ============ */
+  .nav {
+    position: fixed; top: 24px; left: 50%; transform: translateX(-50%);
+    z-index: 50; width: 92%; max-width: 420px;
   }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    border-radius: 999px; padding: 8px;
+  }
+  .nav-logo {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--tiffany); color: #000;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600; margin-left: 4px;
+  }
+  .nav-links { display: none; align-items: center; gap: 2px; font-size: 14px; }
+  @media (min-width: 640px) { .nav-links { display: flex; } }
+  .nav-link {
+    padding: 8px 16px; border-radius: 999px; color: rgba(255,255,255,0.6);
+    transition: color 300ms var(--ease);
+  }
+  .nav-link:hover { color: #fff; }
+  .nav-contact {
+    background: var(--tiffany); color: #000; font-size: 14px; font-weight: 500;
+    padding: 8px 20px; border-radius: 999px; transition: opacity 300ms var(--ease);
+  }
+  .nav-contact:hover { opacity: 0.9; }
+
+  /* ============ HERO ============ */
+  .hero { min-height: 100vh; display: flex; align-items: center; padding: 128px 0 80px; }
+  .hero-grid { display: flex; flex-direction: column; gap: 40px; width: 100%; }
+  @media (min-width: 768px) {
+    .hero-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; align-items: center; }
+  }
+  .hero-widgets { order: 1; }
+  .hero-text { order: 2; }
+  @media (min-width: 768px) {
+    .hero-widgets { order: 2; grid-column: span 5; }
+    .hero-text { order: 1; grid-column: span 7; }
+  }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    border-radius: 999px; padding: 6px 16px 6px 10px; margin-bottom: 32px;
+  }
+  .ping-wrap { position: relative; display: inline-flex; height: 8px; width: 8px; }
+  .ping-outer {
+    position: absolute; display: inline-flex; height: 100%; width: 100%;
+    border-radius: 50%; background: var(--tiffany); opacity: 0.75;
+  }
+  .ping-dot { position: relative; display: inline-flex; border-radius: 50%; height: 8px; width: 8px; background: var(--tiffany); }
+  .badge-text { font-size: 12px; color: rgba(255,255,255,0.7); }
+
+  .h1 {
+    font-size: 52px; line-height: 0.95; letter-spacing: -0.03em; font-weight: 600;
+    background: linear-gradient(to bottom, #ffffff, rgba(255,255,255,0.5));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  @media (min-width: 640px) { .h1 { font-size: 64px; } }
+  @media (min-width: 768px) { .h1 { font-size: 80px; } }
+
+  .hero-desc {
+    margin-top: 32px; color: rgba(255,255,255,0.6); font-weight: 300;
+    max-width: 448px; font-size: 18px; line-height: 1.6;
+  }
+  .hero-actions { margin-top: 40px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+
+  .btn-white {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #fff; color: #000; font-size: 14px; font-weight: 500;
+    padding: 14px 24px; border-radius: 999px;
+    transition: background-color 300ms var(--ease);
+  }
+  .btn-white:hover { background: rgba(255,255,255,0.9); }
+
+  .social-row { display: flex; align-items: center; gap: 16px; }
+  .social-row a { color: rgba(255,255,255,0.4); transition: color 300ms var(--ease); display: flex; }
+  .social-row a:hover { color: #fff; }
+
+  /* Widget grid */
+  .widget-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .widget-card { border-radius: 24px; padding: 20px; }
+  .widget-span-2 { grid-column: span 2; }
+
+  .profile-card { display: flex; align-items: center; gap: 16px; }
+  .avatar {
+    width: 64px; height: 64px; border-radius: 50%; background: var(--tiffany);
+    color: #000; display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 600; flex-shrink: 0;
+  }
+  .profile-name { font-size: 14px; font-weight: 500; color: #fff; }
+  .profile-role { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+
+  .stats-card { display: flex; flex-direction: column; justify-content: space-between; min-height: 116px; }
+  .stats-number { font-size: 24px; font-weight: 600; letter-spacing: -0.02em; }
+  .stats-label { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 4px; line-height: 1.3; }
+
+  .toggle-card { display: flex; flex-direction: column; justify-content: space-between; min-height: 116px; }
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; }
+  .toggle-label { font-size: 11px; color: rgba(255,255,255,0.5); }
+
+  .ios-toggle {
+    width: 42px; height: 24px; background-color: rgba(255,255,255,0.15);
+    border-radius: 999px; position: relative; transition: background-color 300ms ease;
+    cursor: pointer; display: inline-block; flex-shrink: 0;
+  }
+  .ios-toggle::after {
+    content: ''; position: absolute; top: 2px; left: 2px;
+    width: 20px; height: 20px; background-color: #fff; border-radius: 999px;
+    transition: transform 300ms var(--ease);
+  }
+  input:checked + .ios-toggle { background-color: var(--tiffany); }
+  input:checked + .ios-toggle::after { transform: translateX(18px); }
+  .toggle-input { position: absolute; opacity: 0; width: 0; height: 0; }
+
+  .skills-widget { display: flex; align-items: center; justify-content: space-between; }
+  .skills-widget-label { font-size: 11px; color: rgba(255,255,255,0.5); }
+  .skills-widget-icons { display: flex; align-items: center; gap: 12px; color: rgba(255,255,255,0.7); }
+
+  /* ============ ABOUT ============ */
+  .about-section { padding: 112px 0; }
+  .about-title {
+    font-size: 30px; font-weight: 600; letter-spacing: -0.02em;
+    margin-bottom: 48px; max-width: 640px; line-height: 1.25;
+  }
+  @media (min-width: 768px) { .about-title { font-size: 48px; } }
+
+  .about-grid { display: flex; flex-direction: column; gap: 24px; }
+  @media (min-width: 768px) { .about-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; } }
+  .about-card-col { }
+  @media (min-width: 768px) { .about-card-col { grid-column: span 7; } }
+  .about-card {
+    border-radius: 24px; padding: 40px; height: 100%;
+  }
+  .about-card p {
+    color: rgba(255,255,255,0.6); font-weight: 300; line-height: 1.7; font-size: 16px;
+  }
+  .about-card p + p { margin-top: 20px; }
+  @media (min-width: 768px) { .about-card p { font-size: 18px; } }
+
+  .pill-row { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
+  .pill {
+    border-radius: 999px; padding: 8px 16px; font-size: 12px; color: rgba(255,255,255,0.6);
+  }
+
+  .about-stats-col { display: flex; flex-direction: column; gap: 24px; }
+  @media (min-width: 768px) { .about-stats-col { grid-column: span 5; } }
+  .about-stat-card {
+    border-radius: 24px; padding: 24px; flex: 1;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .about-stat-number { font-size: 30px; font-weight: 600; letter-spacing: -0.02em; color: var(--tiffany); }
+  .about-stat-label { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px; }
+
+  /* ============ SKILLS ============ */
+  .skills-section { padding: 80px 0; }
+  .skills-title { font-size: 30px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 56px; }
+  @media (min-width: 768px) { .skills-title { font-size: 36px; } }
+
+  .skills-grid { display: flex; flex-direction: column; gap: 24px; }
+  @media (min-width: 768px) { .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; } }
+
+  .skill-card { border-radius: 24px; padding: 32px; }
+  .skill-icon-wrap {
+    width: 48px; height: 48px; border-radius: 16px;
+    background: rgba(129,216,208,0.1); display: flex; align-items: center; justify-content: center;
+    margin-bottom: 24px; transition: transform 300ms var(--ease);
+  }
+  .skill-card:hover .skill-icon-wrap { transform: scale(1.1); }
+  .skill-title { font-size: 18px; font-weight: 500; margin-bottom: 8px; }
+  .skill-desc { font-size: 14px; color: rgba(255,255,255,0.5); font-weight: 300; line-height: 1.6; }
+
+  /* ============ WORK ============ */
+  .work-section { padding: 80px 0; }
+  .work-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 56px; flex-wrap: wrap; gap: 12px; }
+  .work-title { font-size: 30px; font-weight: 600; letter-spacing: -0.02em; }
+  @media (min-width: 768px) { .work-title { font-size: 36px; } }
+  .work-range { display: none; font-size: 14px; color: rgba(255,255,255,0.4); font-weight: 300; }
+  @media (min-width: 640px) { .work-range { display: block; } }
+
+  .work-grid { display: flex; flex-direction: column; gap: 24px; }
+  @media (min-width: 768px) { .work-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; } }
+
+  .work-card { border-radius: 24px; overflow: hidden; display: block; }
+  .work-visual { position: relative; height: 256px; overflow: hidden; }
+  .work-visual-inner { transition: transform 500ms var(--ease); }
+  .work-card:hover .work-visual-inner { transform: scale(1.03); }
+
+  .work-arrow {
+    position: absolute; top: 16px; right: 16px; width: 40px; height: 40px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 300ms var(--ease);
+  }
+  .work-card:hover .work-arrow { opacity: 1; }
+
+  .work-body { padding: 24px; }
+  .work-labels { display: flex; gap: 8px; margin-bottom: 12px; }
+  .work-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.4); }
+  .work-name { font-size: 20px; font-weight: 500; }
+
+  .grad-lumina { background: linear-gradient(to bottom right, rgba(49,46,129,0.4), #000); }
+  .grad-zenith { background: linear-gradient(to bottom right, rgba(6,78,59,0.2), #000); }
+  .grad-chronos { background: linear-gradient(to bottom right, rgba(88,28,135,0.3), #000); }
+  .grad-structure { background: linear-gradient(to bottom right, #111827, #000); }
+
+  /* Lumina visual */
+  .lumina-panel { position: absolute; inset: 0; padding: 24px; display: flex; align-items: center; justify-content: center; }
+  .lumina-inner { border-radius: 16px; width: 100%; height: 100%; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; }
+  .lumina-top { display: flex; align-items: center; justify-content: space-between; }
+  .lumina-icon { width: 32px; height: 32px; border-radius: 8px; background: rgba(129,216,208,0.2); }
+  .lumina-line { height: 8px; border-radius: 999px; background: rgba(255,255,255,0.1); }
+  .lumina-bottom .lumina-bar { height: 8px; border-radius: 999px; background: rgba(255,255,255,0.1); margin-bottom: 8px; }
+  .lumina-block { width: 100%; height: 64px; border-radius: 12px; background: rgba(129,216,208,0.1); margin-top: 12px; }
+
+  /* Zenith visual */
+  .zenith-wrap { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .zenith-ring {
+    width: 128px; height: 128px; border-radius: 50%;
+    border: 2px dashed rgba(129,216,208,0.4);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .zenith-core { width: 64px; height: 64px; border-radius: 50%; background: rgba(129,216,208,0.1); }
+
+  /* Chronos visual */
+  .chronos-wrap { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 0; }
+  .chronos-panel { width: 64px; height: 112px; border-radius: 16px; }
+  .chronos-panel.left { transform: rotate(-12deg); margin-right: -24px; }
+  .chronos-panel.center { transform: rotate(0deg); z-index: 2; }
+  .chronos-panel.right { transform: rotate(12deg); margin-left: -24px; }
+
+  /* Structure visual */
+  .structure-wrap { position: absolute; inset: 0; padding: 24px; display: flex; flex-direction: column; justify-content: center; gap: 20px; }
+  .structure-line { height: 1px; background: rgba(255,255,255,0.1); }
+  .structure-code { border-radius: 12px; padding: 12px 16px; margin-top: 12px; max-width: 260px; }
+  .structure-code p { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 11px; color: rgba(129,216,208,0.7); }
+
+  /* ============ FOOTER ============ */
+  .footer { padding-bottom: 40px; }
+  .footer-card { border-radius: 40px; padding: 64px 40px; }
+  @media (max-width: 767px) { .footer-card { padding: 40px 24px; } }
+
+  .footer-grid { display: flex; flex-direction: column; gap: 48px; }
+  @media (min-width: 768px) { .footer-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; } }
+
+  .footer-cta-col { }
+  @media (min-width: 768px) { .footer-cta-col { grid-column: span 6; } }
+  .footer-cta-title { font-size: 30px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; }
+  @media (min-width: 768px) { .footer-cta-title { font-size: 48px; } }
+  .footer-cta-desc { color: rgba(255,255,255,0.5); font-weight: 300; margin-top: 24px; max-width: 384px; line-height: 1.6; }
+  .footer-email-btn {
+    display: inline-flex; align-items: center; gap: 8px; margin-top: 32px;
+    background: var(--tiffany); color: #000; font-size: 14px; font-weight: 500;
+    padding: 14px 24px; border-radius: 999px; transition: opacity 300ms var(--ease);
+  }
+  .footer-email-btn:hover { opacity: 0.9; }
+
+  .footer-col { }
+  @media (min-width: 768px) { .footer-col { grid-column: span 3; } }
+  .footer-col-title { font-size: 12px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 20px; }
+  .footer-links { display: flex; flex-direction: column; gap: 12px; font-size: 14px; }
+  .footer-links a { color: rgba(255,255,255,0.6); transition: color 300ms var(--ease); width: fit-content; display: flex; align-items: center; gap: 10px; }
+  .footer-links a:hover { color: #fff; }
+
+  .footer-bottom {
+    margin-top: 64px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  @media (min-width: 640px) { .footer-bottom { flex-direction: row; } }
+  .footer-tag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.4); }
+  .footer-social { display: flex; align-items: center; gap: 20px; }
+  .footer-social a { color: rgba(255,255,255,0.4); transition: color 300ms var(--ease); display: flex; }
+  .footer-social a:hover { color: #fff; }
+  .footer-copy { font-size: 10px; color: rgba(255,255,255,0.3); }
+
+  .scroll-mt { scroll-margin-top: 120px; }
 </style>
 </head>
-<body class="antialiased overflow-x-hidden">
+<body class="antialiased">
 
   <!-- BACKGROUND LAYER (z-0) -->
-  <div class="fixed inset-0 z-0 pointer-events-none">
-    <div class="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full bg-tiffany opacity-[0.07] blur-[120px] mix-blend-screen"></div>
-    <div class="absolute -bottom-40 -right-40 w-[500px] h-[500px] rounded-full bg-blue-900 opacity-10 blur-[120px] mix-blend-screen"></div>
+  <div class="bg-layer">
+    <div class="blob-1"></div>
+    <div class="blob-2"></div>
   </div>
 
   <!-- NAV LAYER (fixed, z-50) -->
-  <nav class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-md">
-    <div class="ios-glass rounded-full px-2 py-2 flex items-center justify-between">
-      <a href="#home" class="flex items-center gap-2 pl-3">
-        <span class="w-7 h-7 rounded-full bg-tiffany flex items-center justify-center text-black text-[11px] font-semibold">AN</span>
-      </a>
-      <div class="hidden sm:flex items-center gap-1 text-sm">
-        <a href="#about" class="px-4 py-2 rounded-full text-white/60 hover:text-white transition-colors duration-300">About Me</a>
-        <a href="#skills" class="px-4 py-2 rounded-full text-white/60 hover:text-white transition-colors duration-300">Skills</a>
-        <a href="#work" class="px-4 py-2 rounded-full text-white/60 hover:text-white transition-colors duration-300">Work</a>
+  <nav class="nav">
+    <div class="nav-inner ios-glass">
+      <a href="#home" class="nav-logo">AD</a>
+      <div class="nav-links">
+        <a href="#about" class="nav-link">About Me</a>
+        <a href="#skills" class="nav-link">Skills</a>
+        <a href="#work" class="nav-link">Work</a>
       </div>
-      <a href="#contact" class="bg-tiffany text-black text-sm font-medium px-5 py-2 rounded-full hover:opacity-90 transition-opacity duration-300">Contact</a>
+      <a href="#contact" class="nav-contact">Contact</a>
     </div>
   </nav>
 
   <!-- MAIN CONTENT -->
-  <main class="relative z-10 max-w-7xl mx-auto px-6 md:px-10">
+  <main class="container">
 
     <!-- SECTION: HOME / HERO -->
-    <section id="home" class="min-h-screen flex items-center pt-32 pb-20 scroll-mt">
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-6 w-full items-center">
+    <section id="home" class="hero scroll-mt">
+      <div class="hero-grid">
 
-        <!-- Right widget grid appears FIRST on mobile (order-1), hero text SECOND (order-2) -->
-        <div class="order-1 md:order-2 md:col-span-5">
-          <div class="grid grid-cols-2 grid-rows-3 gap-4 fade-in-el" style="animation-delay: 0.15s;">
+        <!-- Widget grid: order-1 mobile, order-2 desktop -->
+        <div class="hero-widgets">
 
-            <!-- Profile Card: spans 2 cols -->
-            <div class="col-span-2 ios-glass card-transition rounded-3xl p-6 flex items-center gap-4">
-              <div class="w-16 h-16 rounded-full bg-tiffany tiffany-glow flex items-center justify-center text-black text-xl font-semibold shrink-0">
-                AD
+          <!-- Skeleton -->
+          <div class="widget-grid skel-block fade-in-el">
+            <div class="widget-span-2 skel-block-card" style="min-height:96px; padding:20px; display:flex; align-items:center; gap:16px;">
+              <div class="skel-circle" style="width:64px; height:64px; flex-shrink:0;"></div>
+              <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
+                <div class="skel-bar" style="width:60%;"></div>
+                <div class="skel-bar" style="width:40%; height:9px;"></div>
               </div>
+            </div>
+            <div class="skel-block-card" style="min-height:116px; padding:20px;"></div>
+            <div class="skel-block-card" style="min-height:116px; padding:20px;"></div>
+            <div class="widget-span-2 skel-block-card" style="min-height:60px; padding:20px;"></div>
+          </div>
+
+          <!-- Real -->
+          <div class="widget-grid real-block skel-hidden fade-in-el" style="animation-delay:.1s;">
+            <div class="widget-span-2 ios-glass card widget-card profile-card">
+              <div class="avatar tiffany-glow">AD</div>
               <div>
-                <p class="text-sm font-medium text-white">Andra Nooryanto</p>
-                <p class="text-xs text-white/50 mt-0.5">Network Security, Karawang</p>
+                <p class="profile-name">Adrian Dabrowski</p>
+                <p class="profile-role">Web Designer, California</p>
               </div>
             </div>
 
-            <!-- Stats Card -->
-            <div class="ios-glass card-transition rounded-3xl p-5 flex flex-col justify-between">
-              <i data-lucide="layers" class="w-5 h-5 text-tiffany"></i>
+            <div class="ios-glass card widget-card stats-card">
+              <i data-lucide="layers" style="width:20px;height:20px;color:var(--tiffany);"></i>
               <div>
-                <p class="text-2xl font-semibold tracking-tight">85+</p>
-                <p class="text-[11px] text-white/50 mt-1 leading-tight">Projects Shipped</p>
+                <p class="stats-number">85+</p>
+                <p class="stats-label">Projects Shipped</p>
               </div>
             </div>
 
-            <!-- Toggle Card -->
-            <div class="ios-glass card-transition rounded-3xl p-5 flex flex-col justify-between">
-              <i data-lucide="moon" class="w-5 h-5 text-white/70"></i>
-              <div class="flex items-center justify-between">
-                <p class="text-[11px] text-white/50">Dark Mode</p>
-                <label class="relative inline-flex items-center">
-                  <input type="checkbox" checked class="sr-only peer">
-                  <div class="ios-toggle"></div>
+            <div class="ios-glass card widget-card toggle-card">
+              <i data-lucide="moon" style="width:20px;height:20px;color:rgba(255,255,255,.7);"></i>
+              <div class="toggle-row">
+                <p class="toggle-label">Dark Mode</p>
+                <label style="position:relative; display:inline-flex; align-items:center;">
+                  <input type="checkbox" checked class="toggle-input">
+                  <span class="ios-toggle"></span>
                 </label>
               </div>
             </div>
 
-            <!-- Skills Card: spans 2 cols -->
-            <div class="col-span-2 ios-glass card-transition rounded-3xl p-5 flex items-center justify-between">
-              <p class="text-[11px] text-white/50">Tools I use daily</p>
-              <div class="flex items-center gap-3">
-                <i data-lucide="figma" class="w-4 h-4 text-white/70"></i>
-                <i data-lucide="framer" class="w-4 h-4 text-white/70"></i>
-                <i data-lucide="code-2" class="w-4 h-4 text-white/70"></i>
+            <div class="widget-span-2 ios-glass card widget-card skills-widget">
+              <p class="skills-widget-label">Tools I use daily</p>
+              <div class="skills-widget-icons">
+                <i data-lucide="figma" style="width:16px;height:16px;"></i>
+                <i data-lucide="framer" style="width:16px;height:16px;"></i>
+                <i data-lucide="code-2" style="width:16px;height:16px;"></i>
               </div>
             </div>
-
           </div>
+
         </div>
 
-        <!-- Hero text SECOND on mobile, FIRST on desktop -->
-        <div class="order-2 md:order-1 md:col-span-7">
-          <div class="fade-in-el" style="animation-delay: 0s;">
-            <div class="inline-flex items-center gap-2 ios-glass rounded-full pl-2.5 pr-4 py-1.5 mb-8">
-              <span class="relative flex h-2 w-2">
-                <span class="animate-ping-slow absolute inline-flex h-full w-full rounded-full bg-tiffany opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-2 w-2 bg-tiffany"></span>
+        <!-- Hero text: order-2 mobile, order-1 desktop -->
+        <div class="hero-text">
+
+          <!-- Skeleton -->
+          <div class="skel-block fade-in-el">
+            <div class="skel-bar" style="width:180px; height:28px; border-radius:999px; margin-bottom:32px;"></div>
+            <div class="skel-bar" style="width:90%; height:56px; margin-bottom:12px;"></div>
+            <div class="skel-bar" style="width:60%; height:56px; margin-bottom:32px;"></div>
+            <div class="skel-bar" style="width:100%; height:14px; margin-bottom:10px;"></div>
+            <div class="skel-bar" style="width:80%; height:14px; margin-bottom:32px;"></div>
+            <div style="display:flex; gap:16px;">
+              <div class="skel-bar" style="width:160px; height:48px; border-radius:999px;"></div>
+              <div class="skel-bar" style="width:120px; height:48px; border-radius:999px;"></div>
+            </div>
+          </div>
+
+          <!-- Real -->
+          <div class="real-block skel-hidden fade-in-el">
+            <div class="badge ios-glass">
+              <span class="ping-wrap">
+                <span class="ping-outer ping-anim"></span>
+                <span class="ping-dot"></span>
               </span>
-              <span class="text-xs text-white/70">Available for new projects</span>
+              <span class="badge-text">Available for new projects</span>
             </div>
 
-            <h1 class="text-[52px] sm:text-[64px] md:text-[80px] leading-none tracking-tight font-semibold bg-gradient-to-b from-white to-white/50 bg-clip-text text-transparent">
-              Andra<br>Nooryanto
-            </h1>
+            <h1 class="h1">Adrian<br>Dabrowski</h1>
 
-            <p class="mt-8 text-white/60 font-light max-w-md text-lg leading-relaxed">
+            <p class="hero-desc">
               I design and build clean, considered digital products — from brand identity to shipped interfaces — for startups that care about craft.
             </p>
 
-            <div class="mt-10 flex items-center gap-6">
-              <a href="#work" class="inline-flex items-center gap-2 bg-white text-black text-sm font-medium px-6 py-3.5 rounded-full hover:bg-white/90 transition-colors duration-300">
+            <div class="hero-actions">
+              <a href="#work" class="btn-white">
                 View Portfolio
-                <i data-lucide="arrow-down" class="w-4 h-4"></i>
+                <i data-lucide="arrow-down" style="width:16px;height:16px;"></i>
               </a>
-              <div class="flex items-center gap-4">
-                <a href="#" aria-label="Dribbble" class="text-white/40 hover:text-white transition-colors duration-300">
-                  <i data-lucide="dribbble" class="w-5 h-5"></i>
-                </a>
-                <a href="#" aria-label="Twitter" class="text-white/40 hover:text-white transition-colors duration-300">
-                  <i data-lucide="twitter" class="w-5 h-5"></i>
-                </a>
-                <a href="#" aria-label="LinkedIn" class="text-white/40 hover:text-white transition-colors duration-300">
-                  <i data-lucide="linkedin" class="w-5 h-5"></i>
-                </a>
+              <div class="social-row">
+                <a href="#" aria-label="Dribbble"><i data-lucide="dribbble" style="width:20px;height:20px;"></i></a>
+                <a href="#" aria-label="Twitter"><i data-lucide="twitter" style="width:20px;height:20px;"></i></a>
+                <a href="#" aria-label="LinkedIn"><i data-lucide="linkedin" style="width:20px;height:20px;"></i></a>
               </div>
             </div>
           </div>
+
         </div>
 
       </div>
     </section>
 
     <!-- SECTION: ABOUT ME -->
-    <section id="about" class="py-28 scroll-mt">
-      <div class="fade-in-el">
-        <p class="text-tiffany text-xs tracking-widest mb-3">About Me</p>
-        <h2 class="text-3xl md:text-5xl font-semibold tracking-tight mb-12 max-w-2xl leading-tight">
-          Designer and developer working at the intersection of clarity and craft.
-        </h2>
+    <section id="about" class="about-section scroll-mt">
+
+      <!-- Skeleton header -->
+      <div class="skel-block fade-in-el">
+        <div class="skel-bar" style="width:90px; height:12px; margin-bottom:12px;"></div>
+        <div class="skel-bar" style="width:70%; height:38px; margin-bottom:10px;"></div>
+        <div class="skel-bar" style="width:50%; height:38px; margin-bottom:48px;"></div>
+      </div>
+      <!-- Real header -->
+      <div class="real-block skel-hidden fade-in-el">
+        <p class="eyebrow">About Me</p>
+        <h2 class="about-title">Designer and developer working at the intersection of clarity and craft.</h2>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-        <div class="md:col-span-7 fade-in-el" style="animation-delay: 0.1s;">
-          <div class="ios-glass card-transition rounded-3xl p-8 md:p-10 h-full">
-            <p class="text-white/60 font-light leading-relaxed text-base md:text-lg">
+      <!-- Skeleton body -->
+      <div class="about-grid skel-block">
+        <div class="about-card-col skel-block-card" style="min-height:280px;"></div>
+        <div class="about-stats-col">
+          <div class="skel-block-card" style="flex:1; min-height:80px;"></div>
+          <div class="skel-block-card" style="flex:1; min-height:80px;"></div>
+          <div class="skel-block-card" style="flex:1; min-height:80px;"></div>
+        </div>
+      </div>
+
+      <!-- Real body -->
+      <div class="about-grid real-block skel-hidden">
+        <div class="about-card-col fade-in-el" style="animation-delay:.1s;">
+          <div class="ios-glass card about-card">
+            <p>
               I'm Adrian, a web designer based in California with over six years of experience
               turning ambiguous ideas into interfaces people actually enjoy using. My work sits
               between design and engineering — I sketch systems, not just screens, and I ship
               the code that brings them to life.
             </p>
-            <p class="text-white/60 font-light leading-relaxed text-base md:text-lg mt-5">
+            <p>
               Previously I led design at two early-stage startups, took one product from zero
               to acquisition, and now split my time between independent client work and
               building small tools of my own.
             </p>
-            <div class="mt-8 flex flex-wrap gap-3">
-              <span class="ios-glass rounded-full px-4 py-2 text-xs text-white/60">6+ years experience</span>
-              <span class="ios-glass rounded-full px-4 py-2 text-xs text-white/60">Based in California</span>
-              <span class="ios-glass rounded-full px-4 py-2 text-xs text-white/60">Design × Engineering</span>
+            <div class="pill-row">
+              <span class="ios-glass pill">6+ years experience</span>
+              <span class="ios-glass pill">Based in California</span>
+              <span class="ios-glass pill">Design × Engineering</span>
             </div>
           </div>
         </div>
 
-        <div class="md:col-span-5 flex flex-col gap-6 fade-in-el" style="animation-delay: 0.2s;">
-          <div class="ios-glass card-transition rounded-3xl p-6 flex-1 flex flex-col justify-center">
-            <p class="text-3xl font-semibold tracking-tight text-tiffany">6+</p>
-            <p class="text-xs text-white/50 mt-1">Years of experience</p>
+        <div class="about-stats-col fade-in-el" style="animation-delay:.2s;">
+          <div class="ios-glass card about-stat-card">
+            <p class="about-stat-number">6+</p>
+            <p class="about-stat-label">Years of experience</p>
           </div>
-          <div class="ios-glass card-transition rounded-3xl p-6 flex-1 flex flex-col justify-center">
-            <p class="text-3xl font-semibold tracking-tight text-tiffany">20+</p>
-            <p class="text-xs text-white/50 mt-1">Happy clients worldwide</p>
+          <div class="ios-glass card about-stat-card">
+            <p class="about-stat-number">20+</p>
+            <p class="about-stat-label">Happy clients worldwide</p>
           </div>
-          <div class="ios-glass card-transition rounded-3xl p-6 flex-1 flex flex-col justify-center">
-            <p class="text-3xl font-semibold tracking-tight text-tiffany">1</p>
-            <p class="text-xs text-white/50 mt-1">Product acquired</p>
+          <div class="ios-glass card about-stat-card">
+            <p class="about-stat-number">1</p>
+            <p class="about-stat-label">Product acquired</p>
           </div>
         </div>
       </div>
+
     </section>
 
-    <!-- SECTION: SKILLS (visual identical to original "What I Do") -->
-    <section id="skills" class="py-20 scroll-mt">
-      <div class="fade-in-el">
-        <p class="text-tiffany text-xs tracking-widest mb-3">Skills</p>
-        <h2 class="text-3xl md:text-4xl font-semibold tracking-tight mb-14">What I Do</h2>
+    <!-- SECTION: SKILLS -->
+    <section id="skills" class="skills-section scroll-mt">
+
+      <!-- Skeleton header -->
+      <div class="skel-block fade-in-el">
+        <div class="skel-bar" style="width:60px; height:12px; margin-bottom:12px;"></div>
+        <div class="skel-bar" style="width:220px; height:32px; margin-bottom:56px;"></div>
+      </div>
+      <!-- Real header -->
+      <div class="real-block skel-hidden fade-in-el">
+        <p class="eyebrow">Skills</p>
+        <h2 class="skills-title">What I Do</h2>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-        <div class="ios-glass card-transition rounded-3xl p-8 group fade-in-el" style="animation-delay: 0.1s;">
-          <div class="w-12 h-12 rounded-2xl bg-tiffany/10 flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-110">
-            <i data-lucide="pen-tool" class="w-5 h-5 text-tiffany"></i>
-          </div>
-          <h3 class="text-lg font-medium mb-2">Visual Identity</h3>
-          <p class="text-sm text-white/50 font-light leading-relaxed">
-            Logos, type systems and brand guidelines built to hold up across every surface a
-            company touches.
-          </p>
-        </div>
-
-        <div class="ios-glass card-transition rounded-3xl p-8 group fade-in-el" style="animation-delay: 0.2s;">
-          <div class="w-12 h-12 rounded-2xl bg-tiffany/10 flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-110">
-            <i data-lucide="layout" class="w-5 h-5 text-tiffany"></i>
-          </div>
-          <h3 class="text-lg font-medium mb-2">Websites &amp; Stores</h3>
-          <p class="text-sm text-white/50 font-light leading-relaxed">
-            Responsive, fast, considered — from marketing sites to full e-commerce
-            experiences.
-          </p>
-        </div>
-
-        <div class="ios-glass card-transition rounded-3xl p-8 group fade-in-el" style="animation-delay: 0.3s;">
-          <div class="w-12 h-12 rounded-2xl bg-tiffany/10 flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-110">
-            <i data-lucide="bar-chart-3" class="w-5 h-5 text-tiffany"></i>
-          </div>
-          <h3 class="text-lg font-medium mb-2">SEO Optimization</h3>
-          <p class="text-sm text-white/50 font-light leading-relaxed">
-            Technical and on-page SEO baked into the build, not bolted on after the site
-            ships.
-          </p>
-        </div>
-
+      <!-- Skeleton cards -->
+      <div class="skills-grid skel-block">
+        <div class="skel-block-card" style="min-height:200px;"></div>
+        <div class="skel-block-card" style="min-height:200px;"></div>
+        <div class="skel-block-card" style="min-height:200px;"></div>
       </div>
+
+      <!-- Real cards -->
+      <div class="skills-grid real-block skel-hidden">
+        <div class="ios-glass card skill-card fade-in-el" style="animation-delay:.1s;">
+          <div class="skill-icon-wrap"><i data-lucide="pen-tool" style="width:20px;height:20px;color:var(--tiffany);"></i></div>
+          <h3 class="skill-title">Visual Identity</h3>
+          <p class="skill-desc">Logos, type systems and brand guidelines built to hold up across every surface a company touches.</p>
+        </div>
+        <div class="ios-glass card skill-card fade-in-el" style="animation-delay:.2s;">
+          <div class="skill-icon-wrap"><i data-lucide="layout" style="width:20px;height:20px;color:var(--tiffany);"></i></div>
+          <h3 class="skill-title">Websites &amp; Stores</h3>
+          <p class="skill-desc">Responsive, fast, considered — from marketing sites to full e-commerce experiences.</p>
+        </div>
+        <div class="ios-glass card skill-card fade-in-el" style="animation-delay:.3s;">
+          <div class="skill-icon-wrap"><i data-lucide="bar-chart-3" style="width:20px;height:20px;color:var(--tiffany);"></i></div>
+          <h3 class="skill-title">SEO Optimization</h3>
+          <p class="skill-desc">Technical and on-page SEO baked into the build, not bolted on after the site ships.</p>
+        </div>
+      </div>
+
     </section>
 
     <!-- SECTION: PROJECT / WORK -->
-    <section id="work" class="py-20 scroll-mt">
-      <div class="flex items-end justify-between mb-14 fade-in-el">
+    <section id="work" class="work-section scroll-mt">
+
+      <!-- Skeleton header -->
+      <div class="work-header skel-block fade-in-el">
         <div>
-          <p class="text-tiffany text-xs tracking-widest mb-3">Project / Work</p>
-          <h2 class="text-3xl md:text-4xl font-semibold tracking-tight">Selected Work</h2>
-        </div>
-        <p class="hidden sm:block text-sm text-white/40 font-light">2022 — 2026</p>
-      </div>
-
-      <!-- Skeleton loading state (visible on first load, swapped out by script below) -->
-      <div id="work-skeleton" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="ios-glass rounded-3xl overflow-hidden">
-          <div class="skeleton h-64"></div>
-          <div class="p-6">
-            <div class="skeleton h-3 w-24 rounded mb-4"></div>
-            <div class="skeleton h-5 w-40 rounded"></div>
-          </div>
-        </div>
-        <div class="ios-glass rounded-3xl overflow-hidden">
-          <div class="skeleton h-64"></div>
-          <div class="p-6">
-            <div class="skeleton h-3 w-24 rounded mb-4"></div>
-            <div class="skeleton h-5 w-40 rounded"></div>
-          </div>
-        </div>
-        <div class="ios-glass rounded-3xl overflow-hidden">
-          <div class="skeleton h-64"></div>
-          <div class="p-6">
-            <div class="skeleton h-3 w-24 rounded mb-4"></div>
-            <div class="skeleton h-5 w-40 rounded"></div>
-          </div>
-        </div>
-        <div class="ios-glass rounded-3xl overflow-hidden">
-          <div class="skeleton h-64"></div>
-          <div class="p-6">
-            <div class="skeleton h-3 w-24 rounded mb-4"></div>
-            <div class="skeleton h-5 w-40 rounded"></div>
-          </div>
+          <div class="skel-bar" style="width:110px; height:12px; margin-bottom:12px;"></div>
+          <div class="skel-bar" style="width:200px; height:32px;"></div>
         </div>
       </div>
+      <!-- Real header -->
+      <div class="work-header real-block skel-hidden fade-in-el">
+        <div>
+          <p class="eyebrow">Project / Work</p>
+          <h2 class="work-title">Selected Work</h2>
+        </div>
+        <p class="work-range">2022 — 2026</p>
+      </div>
 
-      <!-- Actual project grid (hidden until skeleton swap) -->
-      <div id="work-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 skeleton-hidden">
+      <!-- Skeleton grid -->
+      <div class="work-grid skel-block">
+        <div class="skel-block-card" style="height:340px;"></div>
+        <div class="skel-block-card" style="height:340px;"></div>
+        <div class="skel-block-card" style="height:340px;"></div>
+        <div class="skel-block-card" style="height:340px;"></div>
+      </div>
+
+      <!-- Real grid -->
+      <div class="work-grid real-block skel-hidden">
 
         <!-- Card 1: Lumina Finance -->
-        <a href="project-detail.html?project=lumina" class="group block ios-glass card-transition rounded-3xl overflow-hidden fade-in-el" style="animation-delay: 0.1s;">
-          <div class="relative h-64 overflow-hidden bg-gradient-to-br from-indigo-900/40 to-black">
-            <div class="card-image-hover absolute inset-0 p-6 flex items-center justify-center">
-              <div class="ios-glass rounded-2xl w-full h-full p-5 flex flex-col justify-between">
-                <div class="flex items-center justify-between">
-                  <div class="w-8 h-8 rounded-lg bg-tiffany/20"></div>
-                  <div class="w-16 h-2 rounded-full bg-white/10"></div>
+        <a href="project-detail.html?project=lumina" class="ios-glass card work-card fade-in-el" style="animation-delay:.1s;">
+          <div class="work-visual grad-lumina">
+            <div class="work-visual-inner lumina-panel">
+              <div class="ios-glass lumina-inner">
+                <div class="lumina-top">
+                  <div class="lumina-icon"></div>
+                  <div class="lumina-line" style="width:64px;"></div>
                 </div>
-                <div class="space-y-2">
-                  <div class="w-3/4 h-2 rounded-full bg-white/10"></div>
-                  <div class="w-1/2 h-2 rounded-full bg-white/10"></div>
-                  <div class="w-full h-16 rounded-xl bg-tiffany/10 mt-3"></div>
+                <div class="lumina-bottom">
+                  <div class="lumina-bar" style="width:75%;"></div>
+                  <div class="lumina-bar" style="width:50%;"></div>
+                  <div class="lumina-block"></div>
                 </div>
               </div>
             </div>
-            <div class="absolute top-4 right-4 w-10 h-10 rounded-full ios-glass flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <i data-lucide="arrow-up-right" class="w-4 h-4 text-white"></i>
-            </div>
+            <div class="work-arrow ios-glass"><i data-lucide="arrow-up-right" style="width:16px;height:16px;"></i></div>
           </div>
-          <div class="p-6">
-            <div class="flex gap-2 mb-3">
-              <span class="text-[10px] uppercase tracking-wider text-white/40">Design</span>
-              <span class="text-[10px] uppercase tracking-wider text-white/40">·</span>
-              <span class="text-[10px] uppercase tracking-wider text-white/40">Dev</span>
+          <div class="work-body">
+            <div class="work-labels">
+              <span class="work-label">Design</span>
+              <span class="work-label">·</span>
+              <span class="work-label">Dev</span>
             </div>
-            <h3 class="text-xl font-medium">Lumina Finance</h3>
+            <h3 class="work-name">Lumina Finance</h3>
           </div>
         </a>
 
         <!-- Card 2: Zenith AI -->
-        <a href="project-detail.html?project=zenith" class="group block ios-glass card-transition rounded-3xl overflow-hidden fade-in-el" style="animation-delay: 0.2s;">
-          <div class="relative h-64 overflow-hidden bg-gradient-to-br from-emerald-900/20 to-black">
-            <div class="card-image-hover absolute inset-0 flex items-center justify-center">
-              <div class="w-32 h-32 rounded-full border-2 border-dashed border-tiffany/40 animate-spin-slow flex items-center justify-center">
-                <div class="w-16 h-16 rounded-full bg-tiffany/10 ios-glass"></div>
+        <a href="project-detail.html?project=zenith" class="ios-glass card work-card fade-in-el" style="animation-delay:.2s;">
+          <div class="work-visual grad-zenith">
+            <div class="work-visual-inner zenith-wrap">
+              <div class="zenith-ring spin-slow">
+                <div class="zenith-core ios-glass"></div>
               </div>
             </div>
-            <div class="absolute top-4 right-4 w-10 h-10 rounded-full ios-glass flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <i data-lucide="arrow-up-right" class="w-4 h-4 text-white"></i>
-            </div>
+            <div class="work-arrow ios-glass"><i data-lucide="arrow-up-right" style="width:16px;height:16px;"></i></div>
           </div>
-          <div class="p-6">
-            <div class="flex gap-2 mb-3">
-              <span class="text-[10px] uppercase tracking-wider text-white/40">Product</span>
-            </div>
-            <h3 class="text-xl font-medium">Zenith AI</h3>
+          <div class="work-body">
+            <div class="work-labels"><span class="work-label">Product</span></div>
+            <h3 class="work-name">Zenith AI</h3>
           </div>
         </a>
 
         <!-- Card 3: Chronos Mobile -->
-        <a href="project-detail.html?project=chronos" class="group block ios-glass card-transition rounded-3xl overflow-hidden fade-in-el" style="animation-delay: 0.3s;">
-          <div class="relative h-64 overflow-hidden bg-gradient-to-br from-purple-900/30 to-black">
-            <div class="card-image-hover absolute inset-0 flex items-center justify-center gap-[-20px]">
-              <div class="ios-glass w-16 h-28 rounded-2xl -rotate-12 -mr-6"></div>
-              <div class="ios-glass w-16 h-28 rounded-2xl rotate-0 z-10 tiffany-glow"></div>
-              <div class="ios-glass w-16 h-28 rounded-2xl rotate-12 -ml-6"></div>
+        <a href="project-detail.html?project=chronos" class="ios-glass card work-card fade-in-el" style="animation-delay:.3s;">
+          <div class="work-visual grad-chronos">
+            <div class="work-visual-inner chronos-wrap">
+              <div class="ios-glass chronos-panel left"></div>
+              <div class="ios-glass chronos-panel center tiffany-glow"></div>
+              <div class="ios-glass chronos-panel right"></div>
             </div>
-            <div class="absolute top-4 right-4 w-10 h-10 rounded-full ios-glass flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <i data-lucide="arrow-up-right" class="w-4 h-4 text-white"></i>
-            </div>
+            <div class="work-arrow ios-glass"><i data-lucide="arrow-up-right" style="width:16px;height:16px;"></i></div>
           </div>
-          <div class="p-6">
-            <div class="flex gap-2 mb-3">
-              <span class="text-[10px] uppercase tracking-wider text-white/40">iOS</span>
-              <span class="text-[10px] uppercase tracking-wider text-white/40">·</span>
-              <span class="text-[10px] uppercase tracking-wider text-white/40">SwiftUI</span>
+          <div class="work-body">
+            <div class="work-labels">
+              <span class="work-label">iOS</span>
+              <span class="work-label">·</span>
+              <span class="work-label">SwiftUI</span>
             </div>
-            <h3 class="text-xl font-medium">Chronos Mobile</h3>
+            <h3 class="work-name">Chronos Mobile</h3>
           </div>
         </a>
 
         <!-- Card 4: Structure Inc -->
-        <a href="project-detail.html?project=structure" class="group block ios-glass card-transition rounded-3xl overflow-hidden fade-in-el" style="animation-delay: 0.4s;">
-          <div class="relative h-64 overflow-hidden bg-gradient-to-br from-gray-900 to-black">
-            <div class="card-image-hover absolute inset-0 p-6 flex flex-col justify-center gap-4">
-              <div class="w-full h-px bg-white/10"></div>
-              <div class="w-4/5 h-px bg-white/10"></div>
-              <div class="w-full h-px bg-white/10"></div>
-              <div class="w-2/3 h-px bg-white/10"></div>
-              <div class="ios-glass rounded-xl p-3 mt-3">
-                <p class="font-mono text-[10px] text-tiffany/70 leading-relaxed">
-                  const&nbsp;build&nbsp;= () =&gt; ship();
-                </p>
+        <a href="project-detail.html?project=structure" class="ios-glass card work-card fade-in-el" style="animation-delay:.4s;">
+          <div class="work-visual grad-structure">
+            <div class="work-visual-inner structure-wrap">
+              <div class="structure-line" style="width:100%;"></div>
+              <div class="structure-line" style="width:80%;"></div>
+              <div class="structure-line" style="width:100%;"></div>
+              <div class="structure-line" style="width:66%;"></div>
+              <div class="ios-glass structure-code">
+                <p>const&nbsp;build&nbsp;= () =&gt; ship();</p>
               </div>
             </div>
-            <div class="absolute top-4 right-4 w-10 h-10 rounded-full ios-glass flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <i data-lucide="arrow-up-right" class="w-4 h-4 text-white"></i>
-            </div>
+            <div class="work-arrow ios-glass"><i data-lucide="arrow-up-right" style="width:16px;height:16px;"></i></div>
           </div>
-          <div class="p-6">
-            <div class="flex gap-2 mb-3">
-              <span class="text-[10px] uppercase tracking-wider text-white/40">Brand</span>
-              <span class="text-[10px] uppercase tracking-wider text-white/40">·</span>
-              <span class="text-[10px] uppercase tracking-wider text-white/40">Web</span>
+          <div class="work-body">
+            <div class="work-labels">
+              <span class="work-label">Brand</span>
+              <span class="work-label">·</span>
+              <span class="work-label">Web</span>
             </div>
-            <h3 class="text-xl font-medium">Structure Inc</h3>
+            <h3 class="work-name">Structure Inc</h3>
           </div>
         </a>
 
@@ -532,71 +805,49 @@
 
   </main>
 
-  <!-- SECTION: FOOTER (enhanced) -->
-  <footer id="contact" class="relative z-10 max-w-7xl mx-auto px-6 md:px-10 pb-10">
-    <div class="ios-glass card-transition rounded-[2.5rem] p-10 md:p-16 fade-in-el">
+  <!-- SECTION: FOOTER -->
+  <footer id="contact" class="footer container">
+    <div class="ios-glass card footer-card fade-in-el">
 
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-6">
-
-        <div class="md:col-span-6">
-          <h2 class="text-3xl md:text-5xl font-semibold tracking-tight leading-tight">
-            Let's build<br>something<span class="text-tiffany">.</span>
-          </h2>
-          <p class="text-white/50 font-light mt-6 max-w-sm leading-relaxed">
-            Have a project in mind, or just want to say hi? My inbox is always open.
-          </p>
-          <a href="mailto:hello@adriandabrowski.com" class="inline-flex items-center gap-2 mt-8 bg-tiffany text-black text-sm font-medium px-6 py-3.5 rounded-full hover:opacity-90 transition-opacity duration-300">
+      <div class="footer-grid">
+        <div class="footer-cta-col">
+          <h2 class="footer-cta-title">Let's build<br>something<span style="color:var(--tiffany);">.</span></h2>
+          <p class="footer-cta-desc">Have a project in mind, or just want to say hi? My inbox is always open.</p>
+          <a href="mailto:hello@adriandabrowski.com" class="footer-email-btn">
             hello@adriandabrowski.com
-            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            <i data-lucide="arrow-right" style="width:16px;height:16px;"></i>
           </a>
         </div>
 
-        <div class="md:col-span-3">
-          <p class="text-xs text-white/40 uppercase tracking-widest mb-5">Navigate</p>
-          <div class="flex flex-col gap-3 text-sm">
-            <a href="#home" class="text-white/60 hover:text-white transition-colors duration-300 w-fit">Home</a>
-            <a href="#about" class="text-white/60 hover:text-white transition-colors duration-300 w-fit">About Me</a>
-            <a href="#skills" class="text-white/60 hover:text-white transition-colors duration-300 w-fit">Skills</a>
-            <a href="#work" class="text-white/60 hover:text-white transition-colors duration-300 w-fit">Work</a>
+        <div class="footer-col">
+          <p class="footer-col-title">Navigate</p>
+          <div class="footer-links">
+            <a href="#home">Home</a>
+            <a href="#about">About Me</a>
+            <a href="#skills">Skills</a>
+            <a href="#work">Work</a>
           </div>
         </div>
 
-        <div class="md:col-span-3">
-          <p class="text-xs text-white/40 uppercase tracking-widest mb-5">Elsewhere</p>
-          <div class="flex flex-col gap-3 text-sm">
-            <a href="#" class="flex items-center gap-2.5 text-white/60 hover:text-white transition-colors duration-300 w-fit">
-              <i data-lucide="github" class="w-4 h-4"></i> GitHub
-            </a>
-            <a href="#" class="flex items-center gap-2.5 text-white/60 hover:text-white transition-colors duration-300 w-fit">
-              <i data-lucide="linkedin" class="w-4 h-4"></i> LinkedIn
-            </a>
-            <a href="#" class="flex items-center gap-2.5 text-white/60 hover:text-white transition-colors duration-300 w-fit">
-              <i data-lucide="instagram" class="w-4 h-4"></i> Instagram
-            </a>
-            <a href="#" class="flex items-center gap-2.5 text-white/60 hover:text-white transition-colors duration-300 w-fit">
-              <i data-lucide="youtube" class="w-4 h-4"></i> YouTube
-            </a>
+        <div class="footer-col">
+          <p class="footer-col-title">Elsewhere</p>
+          <div class="footer-links">
+            <a href="#"><i data-lucide="github" style="width:16px;height:16px;"></i> GitHub</a>
+            <a href="#"><i data-lucide="linkedin" style="width:16px;height:16px;"></i> LinkedIn</a>
+            <a href="#"><i data-lucide="instagram" style="width:16px;height:16px;"></i> Instagram</a>
+            <a href="#"><i data-lucide="youtube" style="width:16px;height:16px;"></i> YouTube</a>
           </div>
         </div>
-
       </div>
 
-      <div class="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p class="text-[10px] uppercase tracking-widest text-white/40">Designed in California</p>
-        <div class="flex items-center gap-5">
-          <a href="#" aria-label="Twitter" class="text-white/40 hover:text-white transition-colors duration-300">
-            <i data-lucide="twitter" class="w-4 h-4"></i>
-          </a>
-          <a href="#" aria-label="LinkedIn" class="text-white/40 hover:text-white transition-colors duration-300">
-            <i data-lucide="linkedin" class="w-4 h-4"></i>
-          </a>
-          <a href="mailto:hello@adriandabrowski.com" aria-label="Email" class="text-white/40 hover:text-white transition-colors duration-300">
-            <i data-lucide="mail" class="w-4 h-4"></i>
-          </a>
+      <div class="footer-bottom">
+        <p class="footer-tag">Designed in California</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Twitter"><i data-lucide="twitter" style="width:16px;height:16px;"></i></a>
+          <a href="#" aria-label="LinkedIn"><i data-lucide="linkedin" style="width:16px;height:16px;"></i></a>
+          <a href="mailto:hello@adriandabrowski.com" aria-label="Email"><i data-lucide="mail" style="width:16px;height:16px;"></i></a>
         </div>
-        <p class="text-[10px] text-white/30">
-          © 2026 Adrian Dabrowski · <a href="error.html?code=404" class="hover:text-white/60 transition-colors duration-300">404</a>
-        </p>
+        <p class="footer-copy">© 2026 Adrian Dabrowski · <a href="error.html?code=404" style="color:inherit;">404</a></p>
       </div>
 
     </div>
@@ -605,13 +856,10 @@
   <script>
     lucide.createIcons();
 
-    // Simulate async content load: swap skeleton -> real project grid
     window.addEventListener('DOMContentLoaded', () => {
-      const skeleton = document.getElementById('work-skeleton');
-      const grid = document.getElementById('work-grid');
       setTimeout(() => {
-        skeleton.classList.add('skeleton-hidden');
-        grid.classList.remove('skeleton-hidden');
+        document.querySelectorAll('.skel-block').forEach(el => el.classList.add('skel-hidden'));
+        document.querySelectorAll('.real-block').forEach(el => el.classList.remove('skel-hidden'));
         lucide.createIcons();
       }, 900);
     });
