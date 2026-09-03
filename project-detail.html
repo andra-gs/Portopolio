@@ -7,346 +7,362 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: { tiffany: '#81D8D0' },
-        fontFamily: { sans: ['Inter', 'sans-serif'] },
-      },
-    },
-  };
-</script>
 <style>
-  * { -ms-overflow-style: none; scrollbar-width: none; }
+  :root {
+    --tiffany: #81D8D0;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --glass-bg: rgba(30, 30, 30, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.08);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; -ms-overflow-style: none; scrollbar-width: none; }
   *::-webkit-scrollbar { width: 0px; background: transparent; }
-  html { scroll-behavior: smooth; }
-  body { background-color: #000000; font-family: 'Inter', sans-serif; color: #ffffff; }
+  body {
+    background-color: #000; color: #fff; font-family: 'Inter', sans-serif;
+    overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  }
+  a { text-decoration: none; color: inherit; }
   ::selection { background-color: #81D8D0; color: #000000; }
   ::-moz-selection { background-color: #81D8D0; color: #000000; }
 
-  .ios-glass {
-    background: rgba(30, 30, 30, 0.4);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-  }
-  .tiffany-glow { box-shadow: 0 0 40px 0 rgba(129, 216, 208, 0.25); }
+  .container { max-width: 1024px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 10; }
+  @media (min-width: 768px) { .container { padding: 0 40px; } }
 
   @keyframes fadeUp {
     0% { opacity: 0; transform: translateY(20px) scale(0.98); }
     100% { opacity: 1; transform: translateY(0) scale(1); }
   }
-  .fade-in-el {
-    opacity: 0;
-    animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-
-  .card-transition {
-    transition: background-color 400ms cubic-bezier(0.16, 1, 0.3, 1),
-                transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
+  .fade-in-el { opacity: 0; animation: fadeUp 0.9s var(--ease) forwards; }
 
   @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-  .animate-spin-slow { animation: spin 10s linear infinite; }
+  .spin-slow { animation: spin 10s linear infinite; }
 
-  /* Skeleton loading */
-  .skeleton {
-    position: relative;
-    overflow: hidden;
-    background-color: rgba(255, 255, 255, 0.06);
+  @keyframes shimmer { 100% { transform: translateX(100%); } }
+
+  .ios-glass {
+    background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
   }
-  .skeleton::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    transform: translateX(-100%);
+  .card { transition: background-color 400ms var(--ease), transform 400ms var(--ease); }
+  .tiffany-glow { box-shadow: 0 0 40px 0 rgba(129, 216, 208, 0.25); }
+
+  /* Skeleton system (same pattern as index.html) */
+  .skel-hidden { display: none !important; }
+  .skel-bar {
+    height: 12px; border-radius: 6px; background-color: rgba(255,255,255,0.06);
+    position: relative; overflow: hidden;
+  }
+  .skel-bar::after {
+    content: ''; position: absolute; inset: 0; transform: translateX(-100%);
     background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 20%, rgba(129,216,208,0.08) 50%, rgba(255,255,255,0.06) 80%, transparent 100%);
     animation: shimmer 1.6s infinite;
   }
-  @keyframes shimmer { 100% { transform: translateX(100%); } }
-  .skeleton-hidden { display: none; }
+  .skel-block-card {
+    border-radius: 24px; background-color: rgba(255,255,255,0.04); border: 1px solid var(--glass-border);
+    position: relative; overflow: hidden;
+  }
+  .skel-block-card::after {
+    content: ''; position: absolute; inset: 0; transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.05) 20%, rgba(129,216,208,0.08) 50%, rgba(255,255,255,0.05) 80%, transparent 100%);
+    animation: shimmer 1.8s infinite;
+  }
+
+  .bg-layer { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .blob-1 { position: absolute; top: -160px; left: -160px; width: 600px; height: 600px; border-radius: 50%; background: var(--tiffany); opacity: 0.07; filter: blur(120px); mix-blend-mode: screen; }
+  .blob-2 { position: absolute; bottom: -160px; right: -160px; width: 500px; height: 500px; border-radius: 50%; background: #1e3a8a; opacity: 0.1; filter: blur(120px); mix-blend-mode: screen; }
+
+  .nav { position: fixed; top: 24px; left: 50%; transform: translateX(-50%); z-index: 50; width: 92%; max-width: 420px; }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; border-radius: 999px; padding: 8px; }
+  .nav-logo { width: 28px; height: 28px; border-radius: 50%; background: var(--tiffany); color: #000; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; margin-left: 4px; }
+  .nav-back { display: none; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 999px; color: rgba(255,255,255,0.6); font-size: 14px; transition: color 300ms var(--ease); }
+  @media (min-width: 640px) { .nav-back { display: inline-flex; } }
+  .nav-back:hover { color: #fff; }
+  .nav-contact { background: var(--tiffany); color: #000; font-size: 14px; font-weight: 500; padding: 8px 20px; border-radius: 999px; transition: opacity 300ms var(--ease); }
+  .nav-contact:hover { opacity: 0.9; }
+
+  main.page { padding: 160px 0 96px; }
+
+  .crumb { display: flex; align-items: center; gap: 8px; font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 24px; }
+  .crumb a:hover { color: #fff; }
+  .crumb-current { color: var(--tiffany); }
+
+  .p-title {
+    font-size: 40px; font-weight: 600; letter-spacing: -0.02em; line-height: 1;
+    background: linear-gradient(to bottom, #fff, rgba(255,255,255,0.5));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  @media (min-width: 640px) { .p-title { font-size: 52px; } }
+  @media (min-width: 768px) { .p-title { font-size: 64px; } }
+
+  .tags-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+  .tag-pill { border-radius: 999px; padding: 6px 14px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.6); }
+
+  .p-summary { color: rgba(255,255,255,0.6); font-weight: 300; font-size: 18px; line-height: 1.6; max-width: 640px; margin-top: 32px; }
+
+  .meta-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 40px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  @media (min-width: 640px) { .meta-row { grid-template-columns: repeat(4, 1fr); } }
+  .meta-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.4); margin-bottom: 4px; }
+  .meta-value { font-size: 14px; color: rgba(255,255,255,0.8); }
+
+  .hero-visual { position: relative; height: 288px; border-radius: 24px; overflow: hidden; margin-top: 40px; }
+  @media (min-width: 768px) { .hero-visual { height: 420px; } }
+
+  .overview-grid { display: flex; flex-direction: column; gap: 24px; margin-top: 64px; }
+  @media (min-width: 768px) { .overview-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; } }
+  .overview-col { }
+  @media (min-width: 768px) { .overview-col { grid-column: span 8; } }
+  .overview-title { font-size: 22px; font-weight: 500; letter-spacing: -0.01em; margin-bottom: 16px; }
+  .overview-col p { color: rgba(255,255,255,0.6); font-weight: 300; line-height: 1.7; }
+  .overview-col p + p { margin-top: 16px; }
+
+  .stack-col { }
+  @media (min-width: 768px) { .stack-col { grid-column: span 4; } }
+  .stack-card { border-radius: 24px; padding: 24px; }
+  .stack-title { font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+  .stack-list { display: flex; flex-direction: column; gap: 12px; font-size: 14px; color: rgba(255,255,255,0.7); }
+  .stack-list div { display: flex; align-items: center; gap: 10px; }
+  .stack-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--tiffany); flex-shrink: 0; }
+
+  .details-title { font-size: 22px; font-weight: 500; letter-spacing: -0.01em; margin: 64px 0 24px; }
+  .gallery-grid { display: flex; flex-direction: column; gap: 24px; }
+  @media (min-width: 640px) { .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; } }
+  .gallery-item { border-radius: 16px; overflow: hidden; height: 192px; }
+  .gallery-inner { width: 100%; height: 100%; position: relative; padding: 20px; display: flex; flex-direction: column; justify-content: flex-end; }
+  .gallery-inner .g-bar { height: 8px; border-radius: 999px; background: rgba(255,255,255,0.1); }
+  .gallery-inner .g-bar + .g-bar { margin-top: 8px; }
+
+  .next-card {
+    margin-top: 96px; border-radius: 24px; padding: 40px;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+  }
+  .next-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.4); margin-bottom: 8px; }
+  .next-title { font-size: 24px; font-weight: 500; letter-spacing: -0.01em; }
+  .next-btn {
+    display: inline-flex; align-items: center; gap: 8px; background: #fff; color: #000;
+    font-size: 14px; font-weight: 500; padding: 14px 24px; border-radius: 999px; flex-shrink: 0;
+    transition: background-color 300ms var(--ease);
+  }
+  .next-btn:hover { background: rgba(255,255,255,0.9); }
+
+  footer.page-footer { padding-bottom: 64px; margin-top: 40px; }
+  .footer-bottom-row {
+    display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 16px;
+    padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  @media (min-width: 640px) { .footer-bottom-row { flex-direction: row; } }
+  .footer-tag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.4); }
+  .footer-social { display: flex; align-items: center; gap: 20px; }
+  .footer-social a { color: rgba(255,255,255,0.4); transition: color 300ms var(--ease); display: flex; }
+  .footer-social a:hover { color: #fff; }
 </style>
 </head>
-<body class="antialiased overflow-x-hidden">
+<body>
 
-  <!-- BACKGROUND LAYER -->
-  <div class="fixed inset-0 z-0 pointer-events-none">
-    <div class="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full bg-tiffany opacity-[0.07] blur-[120px] mix-blend-screen"></div>
-    <div class="absolute -bottom-40 -right-40 w-[500px] h-[500px] rounded-full bg-blue-900 opacity-10 blur-[120px] mix-blend-screen"></div>
-  </div>
+  <div class="bg-layer"><div class="blob-1"></div><div class="blob-2"></div></div>
 
-  <!-- NAV -->
-  <nav class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-md">
-    <div class="ios-glass rounded-full px-2 py-2 flex items-center justify-between">
-      <a href="index.html" class="flex items-center gap-2 pl-3">
-        <span class="w-7 h-7 rounded-full bg-tiffany flex items-center justify-center text-black text-[11px] font-semibold">AD</span>
+  <nav class="nav">
+    <div class="nav-inner ios-glass">
+      <a href="index.html" class="nav-logo">AD</a>
+      <a href="index.html#work" class="nav-back">
+        <i data-lucide="arrow-left" style="width:14px;height:14px;"></i> Back to Work
       </a>
-      <a href="index.html#work" class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-white/60 hover:text-white text-sm transition-colors duration-300">
-        <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
-        Back to Work
-      </a>
-      <a href="index.html#contact" class="bg-tiffany text-black text-sm font-medium px-5 py-2 rounded-full hover:opacity-90 transition-opacity duration-300">Contact</a>
+      <a href="index.html#contact" class="nav-contact">Contact</a>
     </div>
   </nav>
 
-  <!-- SKELETON STATE -->
-  <main id="page-skeleton" class="relative z-10 max-w-5xl mx-auto px-6 md:px-10 pt-40 pb-24">
-    <div class="skeleton h-3 w-24 rounded mb-6"></div>
-    <div class="skeleton h-12 w-3/4 rounded mb-4"></div>
-    <div class="skeleton h-12 w-1/2 rounded mb-10"></div>
-    <div class="skeleton h-4 w-full rounded mb-2"></div>
-    <div class="skeleton h-4 w-5/6 rounded mb-10"></div>
-    <div class="skeleton h-80 w-full rounded-3xl mb-10"></div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="skeleton h-24 rounded-2xl"></div>
-      <div class="skeleton h-24 rounded-2xl"></div>
-      <div class="skeleton h-24 rounded-2xl"></div>
-    </div>
-  </main>
+  <main class="page container">
 
-  <!-- REAL CONTENT -->
-  <main id="page-content" class="relative z-10 max-w-5xl mx-auto px-6 md:px-10 pt-40 pb-24 skeleton-hidden">
-
-    <!-- Meta / breadcrumb -->
-    <div class="fade-in-el flex items-center gap-2 text-xs text-white/40 mb-6">
-      <a href="index.html" class="hover:text-white transition-colors duration-300">Work</a>
-      <span>/</span>
-      <span id="meta-category" class="text-tiffany">Case Study</span>
-    </div>
-
-    <!-- Title -->
-    <div class="fade-in-el" style="animation-delay: 0.05s;">
-      <h1 id="project-title" class="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight leading-none bg-gradient-to-b from-white to-white/50 bg-clip-text text-transparent">
-        Project Name
-      </h1>
-      <div id="project-tags" class="flex flex-wrap gap-2 mt-6">
-        <!-- tags injected -->
+    <!-- Skeleton -->
+    <div id="skel" class="fade-in-el">
+      <div class="skel-bar" style="width:120px; height:10px; margin-bottom:24px;"></div>
+      <div class="skel-bar" style="width:80%; height:48px; margin-bottom:10px;"></div>
+      <div class="skel-bar" style="width:50%; height:48px; margin-bottom:24px;"></div>
+      <div style="display:flex; gap:8px; margin-bottom:32px;">
+        <div class="skel-bar" style="width:70px; height:24px; border-radius:999px;"></div>
+        <div class="skel-bar" style="width:70px; height:24px; border-radius:999px;"></div>
+      </div>
+      <div class="skel-bar" style="width:100%; height:14px; margin-bottom:8px;"></div>
+      <div class="skel-bar" style="width:70%; height:14px; margin-bottom:32px;"></div>
+      <div class="skel-block-card" style="height:288px; margin-bottom:64px;"></div>
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div class="skel-block-card" style="height:120px;"></div>
+        <div class="skel-block-card" style="height:120px;"></div>
       </div>
     </div>
 
-    <!-- Summary -->
-    <p id="project-summary" class="fade-in-el text-white/60 font-light text-lg leading-relaxed max-w-2xl mt-8" style="animation-delay: 0.1s;">
-      A short summary of the project goes here — the brief, the challenge, and the outcome
-      in a couple of sentences.
-    </p>
+    <!-- Real content -->
+    <div id="real" class="skel-hidden">
+      <div class="crumb fade-in-el">
+        <a href="index.html#work">Work</a>
+        <span>/</span>
+        <span id="meta-category" class="crumb-current">Case Study</span>
+      </div>
 
-    <!-- Meta row -->
-    <div class="fade-in-el grid grid-cols-2 sm:grid-cols-4 gap-6 mt-10 pb-10 border-b border-white/10" style="animation-delay: 0.15s;">
-      <div>
-        <p class="text-[10px] uppercase tracking-widest text-white/40 mb-1">Client</p>
-        <p id="meta-client" class="text-sm text-white/80">—</p>
+      <div class="fade-in-el" style="animation-delay:.05s;">
+        <h1 id="project-title" class="p-title">Project Name</h1>
+        <div id="project-tags" class="tags-row"></div>
       </div>
-      <div>
-        <p class="text-[10px] uppercase tracking-widest text-white/40 mb-1">Role</p>
-        <p id="meta-role" class="text-sm text-white/80">—</p>
-      </div>
-      <div>
-        <p class="text-[10px] uppercase tracking-widest text-white/40 mb-1">Year</p>
-        <p id="meta-year" class="text-sm text-white/80">—</p>
-      </div>
-      <div>
-        <p class="text-[10px] uppercase tracking-widest text-white/40 mb-1">Timeline</p>
-        <p id="meta-timeline" class="text-sm text-white/80">—</p>
-      </div>
-    </div>
 
-    <!-- Hero visual (CSS-generated, matches card style) -->
-    <div id="hero-visual" class="fade-in-el relative h-72 md:h-[420px] rounded-3xl overflow-hidden mt-10 ios-glass" style="animation-delay: 0.2s;">
-      <!-- visual injected -->
-    </div>
+      <p id="project-summary" class="p-summary fade-in-el" style="animation-delay:.1s;"></p>
 
-    <!-- Overview -->
-    <div class="fade-in-el grid grid-cols-1 md:grid-cols-12 gap-6 mt-16" style="animation-delay: 0.1s;">
-      <div class="md:col-span-8">
-        <h2 class="text-2xl font-medium tracking-tight mb-4">Overview</h2>
-        <p class="text-white/60 font-light leading-relaxed">
-          Describe the problem space, the constraints, and the approach taken. This
-          template section can be replaced per-project with real case study copy — process,
-          decisions, and what shipped.
-        </p>
-        <p class="text-white/60 font-light leading-relaxed mt-4">
-          A second paragraph can cover results: metrics, feedback, or what changed after
-          launch.
-        </p>
+      <div class="meta-row fade-in-el" style="animation-delay:.15s;">
+        <div><p class="meta-label">Client</p><p id="meta-client" class="meta-value">—</p></div>
+        <div><p class="meta-label">Role</p><p id="meta-role" class="meta-value">—</p></div>
+        <div><p class="meta-label">Year</p><p id="meta-year" class="meta-value">—</p></div>
+        <div><p class="meta-label">Timeline</p><p id="meta-timeline" class="meta-value">—</p></div>
       </div>
-      <div class="md:col-span-4">
-        <div class="ios-glass card-transition rounded-3xl p-6">
-          <p class="text-[10px] uppercase tracking-widest text-white/40 mb-4">Stack</p>
-          <div id="stack-list" class="flex flex-col gap-3 text-sm text-white/70">
-            <!-- stack items injected -->
+
+      <div id="hero-visual" class="hero-visual ios-glass fade-in-el" style="animation-delay:.2s;"></div>
+
+      <div class="overview-grid fade-in-el" style="animation-delay:.1s;">
+        <div class="overview-col">
+          <h2 class="overview-title">Overview</h2>
+          <p>Describe the problem space, the constraints, and the approach taken. This template section can be replaced per-project with real case study copy — process, decisions, and what shipped.</p>
+          <p>A second paragraph can cover results: metrics, feedback, or what changed after launch.</p>
+        </div>
+        <div class="stack-col">
+          <div class="ios-glass card stack-card">
+            <p class="stack-title">Stack</p>
+            <div id="stack-list" class="stack-list"></div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Gallery grid (CSS visualizers, 3 supporting shots) -->
-    <div class="mt-16">
-      <h2 class="fade-in-el text-2xl font-medium tracking-tight mb-6">Details</h2>
-      <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <!-- gallery items injected -->
-      </div>
-    </div>
+      <h2 class="details-title fade-in-el">Details</h2>
+      <div id="gallery-grid" class="gallery-grid"></div>
 
-    <!-- Next project -->
-    <div class="fade-in-el mt-24 ios-glass card-transition rounded-3xl p-10 flex flex-col sm:flex-row items-center justify-between gap-6">
-      <div>
-        <p class="text-[10px] uppercase tracking-widest text-white/40 mb-2">Next project</p>
-        <p id="next-project-title" class="text-2xl font-medium tracking-tight">—</p>
+      <div class="next-card ios-glass card fade-in-el">
+        <div>
+          <p class="next-label">Next project</p>
+          <p id="next-project-title" class="next-title">—</p>
+        </div>
+        <a id="next-project-link" href="#" class="next-btn">
+          View project <i data-lucide="arrow-up-right" style="width:16px;height:16px;"></i>
+        </a>
       </div>
-      <a id="next-project-link" href="#" class="inline-flex items-center gap-2 bg-white text-black text-sm font-medium px-6 py-3.5 rounded-full hover:bg-white/90 transition-colors duration-300 shrink-0">
-        View project
-        <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-      </a>
     </div>
 
   </main>
 
-  <!-- FOOTER -->
-  <footer class="relative z-10 max-w-5xl mx-auto px-6 md:px-10 pb-16">
-    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-10 border-t border-white/10">
-      <p class="text-[10px] uppercase tracking-widest text-white/40">Designed in California</p>
-      <div class="flex items-center gap-5">
-        <a href="#" aria-label="GitHub" class="text-white/40 hover:text-white transition-colors duration-300"><i data-lucide="github" class="w-4 h-4"></i></a>
-        <a href="#" aria-label="LinkedIn" class="text-white/40 hover:text-white transition-colors duration-300"><i data-lucide="linkedin" class="w-4 h-4"></i></a>
-        <a href="mailto:hello@adriandabrowski.com" aria-label="Email" class="text-white/40 hover:text-white transition-colors duration-300"><i data-lucide="mail" class="w-4 h-4"></i></a>
+  <footer class="page-footer container">
+    <div class="footer-bottom-row">
+      <p class="footer-tag">Designed in California</p>
+      <div class="footer-social">
+        <a href="#" aria-label="GitHub"><i data-lucide="github" style="width:16px;height:16px;"></i></a>
+        <a href="#" aria-label="LinkedIn"><i data-lucide="linkedin" style="width:16px;height:16px;"></i></a>
+        <a href="mailto:hello@adriandabrowski.com" aria-label="Email"><i data-lucide="mail" style="width:16px;height:16px;"></i></a>
       </div>
     </div>
   </footer>
 
 <script>
-  // ---- Project data map ----------------------------------------------
-  // Add a new key here to support another project through this same template.
   const PROJECTS = {
     lumina: {
-      category: 'Case Study — Fintech',
-      title: 'Lumina Finance',
+      category: 'Case Study — Fintech', title: 'Lumina Finance',
       tags: ['Design', 'Dev', 'Web App'],
       summary: 'A personal finance dashboard rebuilt from the ground up — clearer data, faster interactions, and a visual language that makes numbers feel calm instead of stressful.',
-      client: 'Lumina Inc.',
-      role: 'Design & Frontend',
-      year: '2025',
-      timeline: '10 weeks',
-      stack: ['Figma', 'React', 'Tailwind CSS', 'Framer Motion'],
-      heroVisual: 'lumina',
-      next: { key: 'zenith', title: 'Zenith AI' },
+      client: 'Lumina Inc.', role: 'Design & Frontend', year: '2025', timeline: '10 weeks',
+      stack: ['Figma', 'React', 'CSS', 'Framer Motion'],
+      heroVisual: 'lumina', next: { key: 'zenith', title: 'Zenith AI' },
     },
     zenith: {
-      category: 'Case Study — AI Product',
-      title: 'Zenith AI',
+      category: 'Case Study — AI Product', title: 'Zenith AI',
       tags: ['Product', 'Design System'],
       summary: 'An AI workspace for product teams. The challenge was making a very abstract, model-driven product feel legible — every state visible, every action reversible.',
-      client: 'Zenith Labs',
-      role: 'Product Design',
-      year: '2025',
-      timeline: '14 weeks',
-      stack: ['Figma', 'Next.js', 'Tailwind CSS', 'Radix UI'],
-      heroVisual: 'zenith',
-      next: { key: 'chronos', title: 'Chronos Mobile' },
+      client: 'Zenith Labs', role: 'Product Design', year: '2025', timeline: '14 weeks',
+      stack: ['Figma', 'Next.js', 'CSS', 'Radix UI'],
+      heroVisual: 'zenith', next: { key: 'chronos', title: 'Chronos Mobile' },
     },
     chronos: {
-      category: 'Case Study — iOS App',
-      title: 'Chronos Mobile',
+      category: 'Case Study — iOS App', title: 'Chronos Mobile',
       tags: ['iOS', 'SwiftUI', 'Design'],
       summary: 'A time-tracking app for freelancers, designed and built natively in SwiftUI. Focused on one-handed use and getting out of the way as quickly as possible.',
-      client: 'Chronos App',
-      role: 'Design & iOS Development',
-      year: '2024',
-      timeline: '8 weeks',
+      client: 'Chronos App', role: 'Design & iOS Development', year: '2024', timeline: '8 weeks',
       stack: ['Figma', 'SwiftUI', 'Combine', 'CoreData'],
-      heroVisual: 'chronos',
-      next: { key: 'structure', title: 'Structure Inc' },
+      heroVisual: 'chronos', next: { key: 'structure', title: 'Structure Inc' },
     },
     structure: {
-      category: 'Case Study — Brand & Web',
-      title: 'Structure Inc',
+      category: 'Case Study — Brand & Web', title: 'Structure Inc',
       tags: ['Brand', 'Web', 'Dev'],
       summary: 'A full rebrand and marketing site for a B2B infrastructure company — from naming support through to a shipped, developer-friendly component library.',
-      client: 'Structure Inc.',
-      role: 'Brand & Web Design',
-      year: '2024',
-      timeline: '12 weeks',
-      stack: ['Figma', 'Webflow', 'Tailwind CSS', 'Astro'],
-      heroVisual: 'structure',
-      next: { key: 'lumina', title: 'Lumina Finance' },
+      client: 'Structure Inc.', role: 'Brand & Web Design', year: '2024', timeline: '12 weeks',
+      stack: ['Figma', 'Webflow', 'CSS', 'Astro'],
+      heroVisual: 'structure', next: { key: 'lumina', title: 'Lumina Finance' },
     },
   };
 
   function heroVisualMarkup(key) {
     const visuals = {
       lumina: `
-        <div class="absolute inset-0 bg-gradient-to-br from-indigo-900/40 to-black"></div>
-        <div class="absolute inset-6 md:inset-10 ios-glass rounded-2xl p-6 flex flex-col justify-between">
-          <div class="flex items-center justify-between">
-            <div class="w-10 h-10 rounded-lg bg-tiffany/20"></div>
-            <div class="w-24 h-2.5 rounded-full bg-white/10"></div>
+        <div style="position:absolute; inset:0; background:linear-gradient(to bottom right, rgba(49,46,129,.4), #000);"></div>
+        <div style="position:absolute; inset:24px; border-radius:16px; padding:24px; display:flex; flex-direction:column; justify-content:space-between;" class="ios-glass">
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <div style="width:40px;height:40px;border-radius:8px;background:rgba(129,216,208,.2);"></div>
+            <div style="width:96px;height:10px;border-radius:999px;background:rgba(255,255,255,.1);"></div>
           </div>
-          <div class="space-y-3">
-            <div class="w-2/3 h-2.5 rounded-full bg-white/10"></div>
-            <div class="w-1/3 h-2.5 rounded-full bg-white/10"></div>
-            <div class="w-full h-24 rounded-xl bg-tiffany/10 mt-4"></div>
+          <div>
+            <div style="width:66%;height:10px;border-radius:999px;background:rgba(255,255,255,.1); margin-bottom:12px;"></div>
+            <div style="width:33%;height:10px;border-radius:999px;background:rgba(255,255,255,.1); margin-bottom:16px;"></div>
+            <div style="width:100%;height:96px;border-radius:12px;background:rgba(129,216,208,.1);"></div>
           </div>
         </div>`,
       zenith: `
-        <div class="absolute inset-0 bg-gradient-to-br from-emerald-900/20 to-black"></div>
-        <div class="absolute inset-0 flex items-center justify-center">
-          <div class="w-48 h-48 md:w-64 md:h-64 rounded-full border-2 border-dashed border-tiffany/40 animate-spin-slow flex items-center justify-center">
-            <div class="w-24 h-24 md:w-32 md:h-32 rounded-full bg-tiffany/10 ios-glass"></div>
+        <div style="position:absolute; inset:0; background:linear-gradient(to bottom right, rgba(6,78,59,.2), #000);"></div>
+        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center;">
+          <div class="spin-slow" style="width:220px;height:220px;border-radius:50%;border:2px dashed rgba(129,216,208,.4); display:flex; align-items:center; justify-content:center;">
+            <div class="ios-glass" style="width:110px;height:110px;border-radius:50%;background:rgba(129,216,208,.1);"></div>
           </div>
         </div>`,
       chronos: `
-        <div class="absolute inset-0 bg-gradient-to-br from-purple-900/30 to-black"></div>
-        <div class="absolute inset-0 flex items-center justify-center gap-2">
-          <div class="ios-glass w-24 h-40 md:w-28 md:h-48 rounded-2xl -rotate-12 -mr-8"></div>
-          <div class="ios-glass w-24 h-40 md:w-28 md:h-48 rounded-2xl rotate-0 z-10 tiffany-glow"></div>
-          <div class="ios-glass w-24 h-40 md:w-28 md:h-48 rounded-2xl rotate-12 -ml-8"></div>
+        <div style="position:absolute; inset:0; background:linear-gradient(to bottom right, rgba(88,28,135,.3), #000);"></div>
+        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center;">
+          <div class="ios-glass" style="width:100px;height:170px;border-radius:16px; transform:rotate(-12deg); margin-right:-32px;"></div>
+          <div class="ios-glass tiffany-glow" style="width:100px;height:170px;border-radius:16px; z-index:2;"></div>
+          <div class="ios-glass" style="width:100px;height:170px;border-radius:16px; transform:rotate(12deg); margin-left:-32px;"></div>
         </div>`,
       structure: `
-        <div class="absolute inset-0 bg-gradient-to-br from-gray-900 to-black"></div>
-        <div class="absolute inset-6 md:inset-10 flex flex-col justify-center gap-5">
-          <div class="w-full h-px bg-white/10"></div>
-          <div class="w-4/5 h-px bg-white/10"></div>
-          <div class="w-full h-px bg-white/10"></div>
-          <div class="w-2/3 h-px bg-white/10"></div>
-          <div class="ios-glass rounded-xl p-4 mt-4 max-w-sm">
-            <p class="font-mono text-xs text-tiffany/70 leading-relaxed">const&nbsp;build&nbsp;= () =&gt; ship();</p>
+        <div style="position:absolute; inset:0; background:linear-gradient(to bottom right, #111827, #000);"></div>
+        <div style="position:absolute; inset:24px; display:flex; flex-direction:column; justify-content:center; gap:20px;">
+          <div style="width:100%;height:1px;background:rgba(255,255,255,.1);"></div>
+          <div style="width:80%;height:1px;background:rgba(255,255,255,.1);"></div>
+          <div style="width:100%;height:1px;background:rgba(255,255,255,.1);"></div>
+          <div style="width:66%;height:1px;background:rgba(255,255,255,.1);"></div>
+          <div class="ios-glass" style="border-radius:12px; padding:16px; margin-top:16px; max-width:280px;">
+            <p style="font-family:Consolas,Menlo,monospace; font-size:13px; color:rgba(129,216,208,.7);">const&nbsp;build&nbsp;= () =&gt; ship();</p>
           </div>
         </div>`,
     };
     return visuals[key] || visuals.lumina;
   }
 
-  function galleryItemMarkup(key, i) {
+  function galleryItemMarkup(key) {
     const bases = {
-      lumina: 'from-indigo-900/30',
-      zenith: 'from-emerald-900/20',
-      chronos: 'from-purple-900/25',
-      structure: 'from-gray-800/60',
+      lumina: 'rgba(49,46,129,.3)', zenith: 'rgba(6,78,59,.2)',
+      chronos: 'rgba(88,28,135,.25)', structure: 'rgba(31,41,55,.6)',
     };
-    const base = bases[key] || 'from-white/5';
+    const base = bases[key] || 'rgba(255,255,255,.05)';
     return `
-      <div class="ios-glass card-transition rounded-2xl overflow-hidden h-48">
-        <div class="w-full h-full bg-gradient-to-br ${base} to-black relative p-5 flex flex-col justify-end">
-          <div class="w-1/2 h-2 rounded-full bg-white/10 mb-2"></div>
-          <div class="w-1/3 h-2 rounded-full bg-white/10"></div>
+      <div class="ios-glass card gallery-item">
+        <div class="gallery-inner" style="background:linear-gradient(to bottom right, ${base}, #000);">
+          <div class="g-bar" style="width:50%;"></div>
+          <div class="g-bar" style="width:33%;"></div>
         </div>
       </div>`;
   }
 
   function loadProject() {
     const params = new URLSearchParams(window.location.search);
-    const key = params.get('project') || 'lumina';
-    const data = PROJECTS[key] || PROJECTS.lumina;
+    const rawKey = params.get('project') || 'lumina';
+    const key = Object.prototype.hasOwnProperty.call(PROJECTS, rawKey) ? rawKey : 'lumina';
+    const data = PROJECTS[key];
 
     document.getElementById('meta-category').textContent = data.category;
     document.getElementById('project-title').textContent = data.title;
     document.title = data.title + ' — Adrian Dabrowski';
 
-    const tagsEl = document.getElementById('project-tags');
-    tagsEl.innerHTML = data.tags.map(t =>
-      `<span class="ios-glass rounded-full px-3.5 py-1.5 text-[11px] uppercase tracking-wider text-white/60">${t}</span>`
+    document.getElementById('project-tags').innerHTML = data.tags.map(t =>
+      `<span class="ios-glass tag-pill">${t}</span>`
     ).join('');
 
     document.getElementById('project-summary').textContent = data.summary;
@@ -357,15 +373,12 @@
 
     document.getElementById('hero-visual').innerHTML = heroVisualMarkup(data.heroVisual);
 
-    const stackEl = document.getElementById('stack-list');
-    stackEl.innerHTML = data.stack.map(s =>
-      `<div class="flex items-center gap-2.5"><span class="w-1.5 h-1.5 rounded-full bg-tiffany"></span>${s}</div>`
+    document.getElementById('stack-list').innerHTML = data.stack.map(s =>
+      `<div><span class="stack-dot"></span>${s}</div>`
     ).join('');
 
-    const galleryEl = document.getElementById('gallery-grid');
-    galleryEl.innerHTML = [1, 2, 3].map(i => galleryItemMarkup(data.heroVisual, i)).join('');
+    document.getElementById('gallery-grid').innerHTML = [1, 2, 3].map(() => galleryItemMarkup(data.heroVisual)).join('');
 
-    const nextData = PROJECTS[data.next.key];
     document.getElementById('next-project-title').textContent = data.next.title;
     document.getElementById('next-project-link').href = `project-detail.html?project=${data.next.key}`;
 
@@ -375,11 +388,10 @@
   loadProject();
   lucide.createIcons();
 
-  // Simulate async load: swap skeleton -> real content
   window.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
-      document.getElementById('page-skeleton').classList.add('skeleton-hidden');
-      document.getElementById('page-content').classList.remove('skeleton-hidden');
+      document.getElementById('skel').classList.add('skel-hidden');
+      document.getElementById('real').classList.remove('skel-hidden');
       lucide.createIcons();
     }, 700);
   });
