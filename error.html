@@ -7,108 +7,156 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: { tiffany: '#81D8D0' },
-        fontFamily: { sans: ['Inter', 'sans-serif'] },
-      },
-    },
-  };
-</script>
 <style>
-  * { -ms-overflow-style: none; scrollbar-width: none; }
+  :root {
+    --tiffany: #81D8D0;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --glass-bg: rgba(30, 30, 30, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.08);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; -ms-overflow-style: none; scrollbar-width: none; }
   *::-webkit-scrollbar { width: 0px; background: transparent; }
-  html { scroll-behavior: smooth; }
-  body { background-color: #000000; font-family: 'Inter', sans-serif; color: #ffffff; }
+  body {
+    background-color: #000; color: #fff; font-family: 'Inter', sans-serif;
+    overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  }
+  a { text-decoration: none; color: inherit; }
   ::selection { background-color: #81D8D0; color: #000000; }
   ::-moz-selection { background-color: #81D8D0; color: #000000; }
-
-  .ios-glass {
-    background: rgba(30, 30, 30, 0.4);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-  }
 
   @keyframes fadeUp {
     0% { opacity: 0; transform: translateY(20px) scale(0.98); }
     100% { opacity: 1; transform: translateY(0) scale(1); }
   }
-  .fade-in-el {
-    opacity: 0;
-    animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  .fade-in-el { opacity: 0; animation: fadeUp 0.9s var(--ease) forwards; }
+
+  @keyframes ping { 75%, 100% { transform: scale(2.2); opacity: 0; } }
+  .ping-anim { animation: ping 2s cubic-bezier(0,0,0.2,1) infinite; }
+
+  @keyframes shimmer { 100% { transform: translateX(100%); } }
+  .skel-hidden { display: none !important; }
+  .skel-bar {
+    height: 12px; border-radius: 6px; background-color: rgba(255,255,255,0.06);
+    position: relative; overflow: hidden; margin: 0 auto;
+  }
+  .skel-bar::after {
+    content: ''; position: absolute; inset: 0; transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 20%, rgba(129,216,208,0.08) 50%, rgba(255,255,255,0.06) 80%, transparent 100%);
+    animation: shimmer 1.6s infinite;
   }
 
-  .card-transition {
-    transition: background-color 400ms cubic-bezier(0.16, 1, 0.3, 1),
-                transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  .ios-glass {
+    background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
   }
+  .card { transition: background-color 400ms var(--ease), transform 400ms var(--ease); }
 
-  @keyframes ping { 75%, 100% { transform: scale(2); opacity: 0; } }
-  .animate-ping-slow { animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite; }
+  .bg-layer { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .blob-1 { position: absolute; top: -160px; left: -160px; width: 600px; height: 600px; border-radius: 50%; background: var(--tiffany); opacity: 0.07; filter: blur(120px); mix-blend-mode: screen; }
+  .blob-2 { position: absolute; bottom: -160px; right: -160px; width: 500px; height: 500px; border-radius: 50%; background: #1e3a8a; opacity: 0.1; filter: blur(120px); mix-blend-mode: screen; }
+
+  .nav { position: fixed; top: 24px; left: 50%; transform: translateX(-50%); z-index: 50; width: 92%; max-width: 420px; }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; border-radius: 999px; padding: 8px; }
+  .nav-logo { width: 28px; height: 28px; border-radius: 50%; background: var(--tiffany); color: #000; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; margin-left: 4px; }
+  .nav-home { background: var(--tiffany); color: #000; font-size: 14px; font-weight: 500; padding: 8px 20px; border-radius: 999px; transition: opacity 300ms var(--ease); }
+  .nav-home:hover { opacity: 0.9; }
+
+  main { position: relative; z-index: 10; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 0 24px; }
+  .error-wrap { max-width: 512px; width: 100%; text-align: center; }
+
+  .badge { display: inline-flex; align-items: center; gap: 8px; border-radius: 999px; padding: 6px 16px 6px 10px; margin-bottom: 40px; }
+  .ping-wrap { position: relative; display: inline-flex; height: 8px; width: 8px; }
+  .ping-outer { position: absolute; display: inline-flex; height: 100%; width: 100%; border-radius: 50%; background: var(--tiffany); opacity: 0.75; }
+  .ping-dot { position: relative; display: inline-flex; border-radius: 50%; height: 8px; width: 8px; background: var(--tiffany); }
+  .badge-text { font-size: 12px; color: rgba(255,255,255,0.7); }
+
+  .error-code {
+    font-size: 100px; line-height: 1; letter-spacing: -0.02em; font-weight: 600;
+    background: linear-gradient(to bottom, #fff, rgba(255,255,255,0.5));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  @media (min-width: 640px) { .error-code { font-size: 140px; } }
+
+  .error-title { font-size: 24px; font-weight: 500; letter-spacing: -0.01em; margin-top: 16px; }
+  @media (min-width: 768px) { .error-title { font-size: 30px; } }
+
+  .error-desc { color: rgba(255,255,255,0.5); font-weight: 300; margin-top: 16px; line-height: 1.6; max-width: 384px; margin-left: auto; margin-right: auto; }
+
+  .error-actions { margin-top: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
+  @media (min-width: 640px) { .error-actions { flex-direction: row; } }
+
+  .btn-white {
+    display: inline-flex; align-items: center; gap: 8px; background: #fff; color: #000;
+    font-size: 14px; font-weight: 500; padding: 14px 24px; border-radius: 999px;
+    transition: background-color 300ms var(--ease);
+  }
+  .btn-white:hover { background: rgba(255,255,255,0.9); }
+  .btn-glass {
+    display: inline-flex; align-items: center; gap: 8px; color: #fff;
+    font-size: 14px; font-weight: 500; padding: 14px 24px; border-radius: 999px;
+    transition: background-color 300ms var(--ease);
+  }
+  .btn-glass:hover { background: rgba(255,255,255,0.05); }
+
+  .error-footer { margin-top: 64px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.1); }
+  .footer-tag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.4); }
 </style>
 </head>
-<body class="antialiased overflow-x-hidden">
+<body>
 
-  <!-- BACKGROUND LAYER -->
-  <div class="fixed inset-0 z-0 pointer-events-none">
-    <div class="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full bg-tiffany opacity-[0.07] blur-[120px] mix-blend-screen"></div>
-    <div class="absolute -bottom-40 -right-40 w-[500px] h-[500px] rounded-full bg-blue-900 opacity-10 blur-[120px] mix-blend-screen"></div>
-  </div>
+  <div class="bg-layer"><div class="blob-1"></div><div class="blob-2"></div></div>
 
-  <!-- NAV -->
-  <nav class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-md">
-    <div class="ios-glass rounded-full px-2 py-2 flex items-center justify-between">
-      <a href="index.html" class="flex items-center gap-2 pl-3">
-        <span class="w-7 h-7 rounded-full bg-tiffany flex items-center justify-center text-black text-[11px] font-semibold">AD</span>
-      </a>
-      <a href="index.html" class="bg-tiffany text-black text-sm font-medium px-5 py-2 rounded-full hover:opacity-90 transition-opacity duration-300">
-        Home
-      </a>
+  <nav class="nav">
+    <div class="nav-inner ios-glass">
+      <a href="index.html" class="nav-logo">AD</a>
+      <a href="index.html" class="nav-home">Home</a>
     </div>
   </nav>
 
-  <!-- MAIN -->
-  <main class="relative z-10 min-h-screen flex items-center justify-center px-6">
-    <div class="max-w-lg w-full text-center fade-in-el">
+  <main>
+    <div class="error-wrap fade-in-el">
 
-      <div id="status-badge" class="inline-flex items-center gap-2 ios-glass rounded-full pl-2.5 pr-4 py-1.5 mb-10">
-        <span class="relative flex h-2 w-2">
-          <span class="animate-ping-slow absolute inline-flex h-full w-full rounded-full bg-tiffany opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2 w-2 bg-tiffany"></span>
-        </span>
-        <span id="badge-text" class="text-xs text-white/70">Something went wrong</span>
+      <!-- Skeleton -->
+      <div id="skel">
+        <div class="skel-bar" style="width:180px; height:28px; border-radius:999px; margin-bottom:40px;"></div>
+        <div class="skel-bar" style="width:220px; height:120px; margin-bottom:16px;"></div>
+        <div class="skel-bar" style="width:60%; height:24px; margin-bottom:16px;"></div>
+        <div class="skel-bar" style="width:80%; height:14px; margin-bottom:6px;"></div>
+        <div class="skel-bar" style="width:60%; height:14px; margin-bottom:40px;"></div>
+        <div style="display:flex; justify-content:center; gap:16px;">
+          <div class="skel-bar" style="width:160px; height:48px; border-radius:999px;"></div>
+          <div class="skel-bar" style="width:140px; height:48px; border-radius:999px;"></div>
+        </div>
       </div>
 
-      <h1 id="error-code" class="text-[100px] sm:text-[140px] leading-none tracking-tight font-semibold bg-gradient-to-b from-white to-white/50 bg-clip-text text-transparent">
-        404
-      </h1>
+      <!-- Real -->
+      <div id="real" class="skel-hidden">
+        <div class="badge ios-glass">
+          <span class="ping-wrap">
+            <span class="ping-outer ping-anim"></span>
+            <span class="ping-dot"></span>
+          </span>
+          <span id="badge-text" class="badge-text">Something went wrong</span>
+        </div>
 
-      <h2 id="error-title" class="text-2xl md:text-3xl font-medium tracking-tight mt-4">
-        Page not found
-      </h2>
+        <h1 id="error-code" class="error-code">404</h1>
+        <h2 id="error-title" class="error-title">Page not found</h2>
+        <p id="error-desc" class="error-desc">The page you're looking for doesn't exist, was moved, or the link is broken.</p>
 
-      <p id="error-desc" class="text-white/50 font-light mt-4 leading-relaxed max-w-sm mx-auto">
-        The page you're looking for doesn't exist, was moved, or the link is broken.
-      </p>
+        <div class="error-actions">
+          <a href="index.html" class="btn-white">
+            <i data-lucide="arrow-left" style="width:16px;height:16px;"></i> Back to Home
+          </a>
+          <a href="index.html#contact" class="ios-glass card btn-glass">
+            Contact me <i data-lucide="arrow-right" style="width:16px;height:16px;"></i>
+          </a>
+        </div>
 
-      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a href="index.html" class="inline-flex items-center gap-2 bg-white text-black text-sm font-medium px-6 py-3.5 rounded-full hover:bg-white/90 transition-colors duration-300">
-          <i data-lucide="arrow-left" class="w-4 h-4"></i>
-          Back to Home
-        </a>
-        <a href="index.html#contact" class="inline-flex items-center gap-2 ios-glass card-transition text-white text-sm font-medium px-6 py-3.5 rounded-full hover:bg-white/5">
-          Contact me
-          <i data-lucide="arrow-right" class="w-4 h-4"></i>
-        </a>
-      </div>
-
-      <div class="mt-16 pt-8 border-t border-white/10">
-        <p class="text-[10px] uppercase tracking-widest text-white/40">Designed in California</p>
+        <div class="error-footer">
+          <p class="footer-tag">Designed in California</p>
+        </div>
       </div>
 
     </div>
@@ -116,47 +164,20 @@
 
 <script>
   const ERRORS = {
-    '400': {
-      badge: 'Bad request',
-      title: 'Bad request',
-      desc: 'The request could not be understood. Check the URL and try again.',
-    },
-    '401': {
-      badge: 'Authentication required',
-      title: 'Unauthorized',
-      desc: 'You need to sign in to view this page.',
-    },
-    '403': {
-      badge: 'Access restricted',
-      title: 'Forbidden',
-      desc: 'You don\u2019t have permission to view this page.',
-    },
-    '404': {
-      badge: 'Something went wrong',
-      title: 'Page not found',
-      desc: 'The page you\u2019re looking for doesn\u2019t exist, was moved, or the link is broken.',
-    },
-    '408': {
-      badge: 'Timed out',
-      title: 'Request timeout',
-      desc: 'The server took too long to respond. Please try again.',
-    },
-    '500': {
-      badge: 'Server error',
-      title: 'Something broke on our end',
-      desc: 'An unexpected error occurred. It\u2019s been logged — please try again shortly.',
-    },
-    '503': {
-      badge: 'Unavailable',
-      title: 'Service unavailable',
-      desc: 'This page is temporarily down for maintenance. Check back soon.',
-    },
+    '400': { badge: 'Bad request', title: 'Bad request', desc: 'The request could not be understood. Check the URL and try again.' },
+    '401': { badge: 'Authentication required', title: 'Unauthorized', desc: 'You need to sign in to view this page.' },
+    '403': { badge: 'Access restricted', title: 'Forbidden', desc: 'You don\u2019t have permission to view this page.' },
+    '404': { badge: 'Something went wrong', title: 'Page not found', desc: 'The page you\u2019re looking for doesn\u2019t exist, was moved, or the link is broken.' },
+    '408': { badge: 'Timed out', title: 'Request timeout', desc: 'The server took too long to respond. Please try again.' },
+    '500': { badge: 'Server error', title: 'Something broke on our end', desc: 'An unexpected error occurred. It\u2019s been logged — please try again shortly.' },
+    '503': { badge: 'Unavailable', title: 'Service unavailable', desc: 'This page is temporarily down for maintenance. Check back soon.' },
   };
 
   function loadError() {
     const params = new URLSearchParams(window.location.search);
-    const code = params.get('code') || '404';
-    const data = ERRORS[code] || ERRORS['404'];
+    const rawCode = params.get('code') || '404';
+    const code = Object.prototype.hasOwnProperty.call(ERRORS, rawCode) ? rawCode : '404';
+    const data = ERRORS[code];
 
     document.getElementById('error-code').textContent = code;
     document.getElementById('badge-text').textContent = data.badge;
@@ -167,6 +188,14 @@
 
   loadError();
   lucide.createIcons();
+
+  window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      document.getElementById('skel').classList.add('skel-hidden');
+      document.getElementById('real').classList.remove('skel-hidden');
+      lucide.createIcons();
+    }, 600);
+  });
 </script>
 
 </body>
