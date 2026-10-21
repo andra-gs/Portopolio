@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project — Andra Nooryanto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  :root {
+    --tiffany: #81D8D0;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --glass-bg: rgba(30, 30, 30, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.08);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; -ms-overflow-style: none; scrollbar-width: none; }
+  *::-webkit-scrollbar { width: 0px; background: transparent; }
+  body {
+    background-color: #000; color: #fff; font-family: 'Inter', sans-serif;
+    overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  }
+  a { text-decoration: none; color: inherit; }
+  ::selection { background-color: #81D8D0; color: #000000; }
+  ::-moz-selection { background-color: #81D8D0; color: #000000; }
+
+  .container { max-width: 1024px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 10; }
+  @media (min-width: 768px) { .container { padding: 0 40px; } }
+
+  @keyframes fadeUp {
+    0% { opacity: 0; transform: translateY(20px) scale(0.98); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .fade-in-el { opacity: 0; animation: fadeUp 0.9s var(--ease) forwards; }
+
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .spin-slow { animation: spin 10s linear infinite; }
+
+  @keyframes shimmer { 100% { transform: translateX(100%); } }
+
+  .ios-glass {
+    background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+  }
+  .card { transition: background-color 400ms var(--ease), transform 400ms var(--ease); }
+  .tiffany-glow { box-shadow: 0 0 40px 0 rgba(129, 216, 208, 0.25); }
+
+  /* Skeleton system (same pattern as index.html) */
+  .skel-hidden { display: none !important; }
+  .skel-bar {
+    height: 12px; border-radius: 6px; background-color: rgba(255,255,255,0.06);
+    position: relative; overflow: hidden;
+  }
+  .skel-bar::after {
+    content: ''; position: absolute; inset: 0; transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 20%, rgba(129,216,208,0.08) 50%, rgba(255,255,255,0.06) 80%, transparent 100%);
+    animation: shimmer 1.6s infinite;
+  }
+  .skel-block-card {
+    border-radius: 24px; background-color: rgba(255,255,255,0.04); border: 1px solid var(--glass-border);
+    position: relative; overflow: hidden;
+  }
+  .skel-block-card::after {
+    content: ''; position: absolute; inset: 0; transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.05) 20%, rgba(129,216,208,0.08) 50%, rgba(255,255,255,0.05) 80%, transparent 100%);
+    animation: shimmer 1.8s infinite;
+  }
+
+  .bg-layer { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .blob-1 { position: absolute; top: -160px; left: -160px; width: 600px; height: 600px; border-radius: 50%; background: var(--tiffany); opacity: 0.07; filter: blur(120px); mix-blend-mode: screen; }
+  .blob-2 { position: absolute; bottom: -160px; right: -160px; width: 500px; height: 500px; border-radius: 50%; background: #1e3a8a; opacity: 0.1; filter: blur(120px); mix-blend-mode: screen; }
+
+  .nav { position: fixed; top: 24px; left: 50%; transform: translateX(-50%); z-index: 50; width: 92%; max-width: 420px; }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; border-radius: 999px; padding: 8px; }
+  .nav-logo { width: 28px; height: 28px; border-radius: 50%; background: var(--tiffany); color: #000; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; margin-left: 4px; }
+  .nav-back { display: none; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 999px; color: rgba(255,255,255,0.6); font-size: 14px; transition: color 300ms var(--ease); }
+  @media (min-width: 640px) { .nav-back { display: inline-flex; } }
+  .nav-back:hover { color: #fff; }
+  .nav-contact { background: var(--tiffany); color: #000; font-size: 14px; font-weight: 500; padding: 8px 20px; border-radius: 999px; transition: opacity 300ms var(--ease); }
+  .nav-contact:hover { opacity: 0.9; }
+
+  main.page { padding: 160px 0 96px; }
+
+  .crumb { display: flex; align-items: center; gap: 8px; font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 24px; }
+  .crumb a:hover { color: #fff; }
+  .crumb-current { color: var(--tiffany); }
+
+  .p-title {
+    font-size: 40px; font-weight: 600; letter-spacing: -0.02em; line-height: 1;
+    background: linear-gradient(to bottom, #fff, rgba(255,255,255,0.5));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  @media (min-width: 640px) { .p-title { font-size: 52px; } }
+  @media (min-width: 768px) { .p-title { font-size: 64px; } }
+
+  .tags-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+  .tag-pill { border-radius: 999px; padding: 6px 14px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.6); }
+
+  .p-summary { color: rgba(255,255,255,0.6); font-weight: 300; font-size: 18px; line-height: 1.6; max-width: 640px; margin-top: 32px; }
+
+  .meta-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 40px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  @media (min-width: 640px) { .meta-row { grid-template-columns: repeat(4, 1fr); } }
+  .meta-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.4); margin-bottom: 4px; }
+  .meta-value { font-size: 14px; color: rgba(255,255,255,0.8); }
+
+  .hero-visual { position: relative; height: 288px; border-radius: 24px; overflow: hidden; margin-top: 40px; }
+  @media (min-width: 768px) { .hero-visual { height: 420px; } }
+
+  .overview-grid { display: flex; flex-direction: column; gap: 24px; margin-top: 64px; }
+  @media (min-width: 768px) { .overview-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; } }
+  .overview-col { }
+  @media (min-width: 768px) { .overview-col { grid-column: span 8; } }
+  .overview-title { font-size: 22px; font-weight: 500; letter-spacing: -0.01em; margin-bottom: 16px; }
+  .overview-col p { color: rgba(255,255,255,0.6); font-weight: 300; line-height: 1.7; }
+  .overview-col p + p { margin-top: 16px; }
+
+  .stack-col { }
+  @media (min-width: 768px) { .stack-col { grid-column: span 4; } }
+  .stack-card { border-radius: 24px; padding: 24px; }
+  .stack-title { font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+  .stack-list { display: flex; flex-direction: column; gap: 12px; font-size: 14px; color: rgba(255,255,255,0.7); }
+  .stack-list div { display: flex; align-items: center; gap: 10px; }
+  .stack-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--tiffany); flex-shrink: 0; }
+
+  .details-title { font-size: 22px; font-weight: 500; letter-spacing: -0.01em; margin: 64px 0 24px; }
+  .gallery-grid { display: flex; flex-direction: column; gap: 24px; }
+  @media (min-width: 640px) { .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; } }
+  .gallery-item { border-radius: 16px; overflow: hidden; height: 192px; }
+  .gallery-inner { width: 100%; height: 100%; position: relative; padding: 20px; display: flex; flex-direction: column; justify-content: flex-end; }
+  .gallery-inner .g-bar { height: 8px; border-radius: 999px; background: rgba(255,255,255,0.1); }
+  .gallery-inner .g-bar + .g-bar { margin-top: 8px; }
+
+  .next-card {
+    margin-top: 96px; border-radius: 24px; padding: 40px;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+  }
+  .next-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.4); margin-bottom: 8px; }
+  .next-title { font-size: 24px; font-weight: 500; letter-spacing: -0.01em; }
+  .next-btn {
+    display: inline-flex; align-items: center; gap: 8px; background: #fff; color: #000;
+    font-size: 14px; font-weight: 500; padding: 14px 24px; border-radius: 999px; flex-shrink: 0;
+    transition: background-color 300ms var(--ease);
+  }
+  .next-btn:hover { background: rgba(255,255,255,0.9); }
+
+  footer.page-footer { padding-bottom: 64px; margin-top: 40px; }
+  .footer-bottom-row {
+    display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 16px;
+    padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  @media (min-width: 640px) { .footer-bottom-row { flex-direction: row; } }
+  .footer-tag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.4); }
+  .footer-social { display: flex; align-items: center; gap: 20px; }
+  .footer-social a { color: rgba(255,255,255,0.4); transition: color 300ms var(--ease); display: flex; }
+  .footer-social a:hover { color: #fff; }
+</style>
+</head>
+<body>
+
+  <div class="bg-layer"><div class="blob-1"></div><div class="blob-2"></div></div>
+
+  <nav class="nav">
+    <div class="nav-inner ios-glass">
+      <a href="index.html" class="nav-logo">AN</a>
+      <a href="index.html#work" class="nav-back">
+        <i data-lucide="arrow-left" style="width:14px;height:14px;"></i> Back to Work
+      </a>
+      <a href="index.html#contact" class="nav-contact">Contact</a>
+    </div>
+  </nav>
+
+  <main class="page container">
+
+    <!-- Skeleton -->
+    <div id="skel" class="fade-in-el">
+      <div class="skel-bar" style="width:120px; height:10px; margin-bottom:24px;"></div>
+      <div class="skel-bar" style="width:80%; height:48px; margin-bottom:10px;"></div>
+      <div class="skel-bar" style="width:50%; height:48px; margin-bottom:24px;"></div>
+      <div style="display:flex; gap:8px; margin-bottom:32px;">
+        <div class="skel-bar" style="width:70px; height:24px; border-radius:999px;"></div>
+        <div class="skel-bar" style="width:70px; height:24px; border-radius:999px;"></div>
+      </div>
+      <div class="skel-bar" style="width:100%; height:14px; margin-bottom:8px;"></div>
+      <div class="skel-bar" style="width:70%; height:14px; margin-bottom:32px;"></div>
+      <div class="skel-block-card" style="height:288px; margin-bottom:64px;"></div>
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div class="skel-block-card" style="height:120px;"></div>
+        <div class="skel-block-card" style="height:120px;"></div>
+      </div>
+    </div>
+
+    <!-- Real content -->
+    <div id="real" class="skel-hidden">
+      <div class="crumb fade-in-el">
+        <a href="index.html#work">Work</a>
+        <span>/</span>
+        <span id="meta-category" class="crumb-current">Case Study</span>
+      </div>
+
+      <div class="fade-in-el" style="animation-delay:.05s;">
+        <h1 id="project-title" class="p-title">Project Name</h1>
+        <div id="project-tags" class="tags-row"></div>
+      </div>
+
+      <p id="project-summary" class="p-summary fade-in-el" style="animation-delay:.1s;"></p>
+
+      <div class="meta-row fade-in-el" style="animation-delay:.15s;">
+        <div><p class="meta-label">Client</p><p id="meta-client" class="meta-value">—</p></div>
+        <div><p class="meta-label">Role</p><p id="meta-role" class="meta-value">—</p></div>
+        <div><p class="meta-label">Year</p><p id="meta-year" class="meta-value">—</p></div>
+        <div><p class="meta-label">Timeline</p><p id="meta-timeline" class="meta-value">—</p></div>
+      </div>
+
+      <div id="hero-visual" class="hero-visual ios-glass fade-in-el" style="animation-delay:.2s;"></div>
+
+      <div class="overview-grid fade-in-el" style="animation-delay:.1s;">
+        <div class="overview-col">
+          <h2 class="overview-title">Overview</h2>
+          <p>Describe the problem space, the constraints, and the approach taken. This template section can be replaced per-project with real case study copy — process, decisions, and what shipped.</p>
+          <p>A second paragraph can cover results: metrics, feedback, or what changed after launch.</p>
+        </div>
+        <div class="stack-col">
+          <div class="ios-glass card stack-card">
+            <p class="stack-title">Stack</p>
+            <div id="stack-list" class="stack-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="details-title fade-in-el">Details</h2>
+      <div id="gallery-grid" class="gallery-grid"></div>
+
+      <div class="next-card ios-glass card fade-in-el">
+        <div>
+          <p class="next-label">Next project</p>
+          <p id="next-project-title" class="next-title">—</p>
+        </div>
+        <a id="next-project-link" href="#" class="next-btn">
+          View project <i data-lucide="arrow-up-right" style="width:16px;height:16px;"></i>
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="page-footer container">
+    <div class="footer-bottom-row">
+      <p class="footer-tag">Designed in California</p>
+      <div class="footer-social">
+        <a href="#" aria-label="GitHub"><i data-lucide="github" style="width:16px;height:16px;"></i></a>
+        <a href="#" aria-label="LinkedIn"><i data-lucide="linkedin" style="width:16px;height:16px;"></i></a>
+        <a href="mailto:hello@adriandabrowski.com" aria-label="Email"><i data-lucide="mail" style="width:16px;height:16px;"></i></a>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  const PROJECTS = {
+    lumina: {
+      category: 'Case Study — Fintech', title: 'Lumina Finance',
+      tags: ['Design', 'Dev', 'Web App'],
+      summary: 'A personal finance dashboard rebuilt from the ground up — clearer data, faster interactions, and a visual language that makes numbers feel calm instead of stressful.',
+      client: 'Lumina Inc.', role: 'Design & Frontend', year: '2025', timeline: '10 weeks',
+      stack: ['Figma', 'React', 'CSS', 'Framer Motion'],
+      heroVisual: 'lumina', next: { key: 'zenith', title: 'Zenith AI' },
+    },
+    zenith: {
+      category: 'Case Study — AI Product', title: 'Zenith AI',
+      tags: ['Product', 'Design System'],
+      summary: 'An AI workspace for product teams. The challenge was making a very abstract, model-driven product feel legible — every state visible, every action reversible.',
+      client: 'Zenith Labs', role: 'Product Design', year: '2025', timeline: '14 weeks',
+      stack: ['Figma', 'Next.js', 'CSS', 'Radix UI'],
+      heroVisual: 'zenith', next: { key: 'chronos', title: 'Chronos Mobile' },
+    },
+    chronos: {
+      category: 'Case Study — iOS App', title: 'Chronos Mobile',
+      tags: ['iOS', 'SwiftUI', 'Design'],
+      summary: 'A time-tracking app for freelancers, designed and built natively in SwiftUI. Focused on one-handed use and getting out of the way as quickly as possible.',
+      client: 'Chronos App', role: 'Design & iOS Development', year: '2024', timeline: '8 weeks',
+      stack: ['Figma', 'SwiftUI', 'Combine', 'CoreData'],
+      heroVisual: 'chronos', next: { key: 'structure', title: 'Structure Inc' },
+    },
+    structure: {
+      category: 'Case Study — Brand & Web', title: 'Structure Inc',
+      tags: ['Brand', 'Web', 'Dev'],
+      summary: 'A full rebrand and marketing site for a B2B infrastructure company — from naming support through to a shipped, developer-friendly component library.',
+      client: 'Structure Inc.', role: 'Brand & Web Design', year: '2024', timeline: '12 weeks',
+      stack: ['Figma', 'Webflow', 'CSS', 'Astro'],
+      heroVisual: 'structure', next: { key: 'lumina', title: 'Lumina Finance' },
+    },
+  };
+
+  function heroVisualMarkup(key) {
+    const visuals = {
+      lumina: `
+        <div style="position:absolute; inset:0; background:linear-gradient(to bottom right, rgba(49,46,129,.4), #000);"></div>
+        <div style="position:absolute; inset:24px; border-radius:16px; padding:24px; display:flex; flex-direction:column; justify-content:space-between;" class="ios-glass">
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <div style="width:40px;height:40px;border-radius:8px;background:rgba(129,216,208,.2);"></div>
+            <div style="width:96px;height:10px;border-radius:999px;background:rgba(255,255,255,.1);"></div>
+          </div>
+          <div>
+            <div style="width:66%;height:10px;border-radius:999px;background:rgba(255,255,255,.1); margin-bottom:12px;"></div>
+            <div style="width:33%;height:10px;border-radius:999px;background:rgba(255,255,255,.1); margin-bottom:16px;"></div>
+            <div style="width:100%;height:96px;border-radius:12px;background:rgba(129,216,208,.1);"></div>
+          </div>
+        </div>`,
+      zenith: `
+        <div style="position:absolute; inset:0; background:linear-gradient(to bottom right, rgba(6,78,59,.2), #000);"></div>
+        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center;">
+          <div class="spin-slow" style="width:220px;height:220px;border-radius:50%;border:2px dashed rgba(129,216,208,.4); display:flex; align-items:center; justify-content:center;">
+            <div class="ios-glass" style="width:110px;height:110px;border-radius:50%;background:rgba(129,216,208,.1);"></div>
+          </div>
+        </div>`,
+      chronos: `
+        <div style="position:absolute; inset:0; background:linear-gradient(to bottom right, rgba(88,28,135,.3), #000);"></div>
+        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center;">
+          <div class="ios-glass" style="width:100px;height:170px;border-radius:16px; transform:rotate(-12deg); margin-right:-32px;"></div>
+          <div class="ios-glass tiffany-glow" style="width:100px;height:170px;border-radius:16px; z-index:2;"></div>
+          <div class="ios-glass" style="width:100px;height:170px;border-radius:16px; transform:rotate(12deg); margin-left:-32px;"></div>
+        </div>`,
+      structure: `
+        <div style="position:absolute; inset:0; background:linear-gradient(to bottom right, #111827, #000);"></div>
+        <div style="position:absolute; inset:24px; display:flex; flex-direction:column; justify-content:center; gap:20px;">
+          <div style="width:100%;height:1px;background:rgba(255,255,255,.1);"></div>
+          <div style="width:80%;height:1px;background:rgba(255,255,255,.1);"></div>
+          <div style="width:100%;height:1px;background:rgba(255,255,255,.1);"></div>
+          <div style="width:66%;height:1px;background:rgba(255,255,255,.1);"></div>
+          <div class="ios-glass" style="border-radius:12px; padding:16px; margin-top:16px; max-width:280px;">
+            <p style="font-family:Consolas,Menlo,monospace; font-size:13px; color:rgba(129,216,208,.7);">const&nbsp;build&nbsp;= () =&gt; ship();</p>
+          </div>
+        </div>`,
+    };
+    return visuals[key] || visuals.lumina;
+  }
+
+  function galleryItemMarkup(key) {
+    const bases = {
+      lumina: 'rgba(49,46,129,.3)', zenith: 'rgba(6,78,59,.2)',
+      chronos: 'rgba(88,28,135,.25)', structure: 'rgba(31,41,55,.6)',
+    };
+    const base = bases[key] || 'rgba(255,255,255,.05)';
+    return `
+      <div class="ios-glass card gallery-item">
+        <div class="gallery-inner" style="background:linear-gradient(to bottom right, ${base}, #000);">
+          <div class="g-bar" style="width:50%;"></div>
+          <div class="g-bar" style="width:33%;"></div>
+        </div>
+      </div>`;
+  }
+
+  function loadProject() {
+    const params = new URLSearchParams(window.location.search);
+    const rawKey = params.get('project') || 'lumina';
+    const key = Object.prototype.hasOwnProperty.call(PROJECTS, rawKey) ? rawKey : 'lumina';
+    const data = PROJECTS[key];
+
+    document.getElementById('meta-category').textContent = data.category;
+    document.getElementById('project-title').textContent = data.title;
+    document.title = data.title + ' — Adrian Dabrowski';
+
+    document.getElementById('project-tags').innerHTML = data.tags.map(t =>
+      `<span class="ios-glass tag-pill">${t}</span>`
+    ).join('');
+
+    document.getElementById('project-summary').textContent = data.summary;
+    document.getElementById('meta-client').textContent = data.client;
+    document.getElementById('meta-role').textContent = data.role;
+    document.getElementById('meta-year').textContent = data.year;
+    document.getElementById('meta-timeline').textContent = data.timeline;
+
+    document.getElementById('hero-visual').innerHTML = heroVisualMarkup(data.heroVisual);
+
+    document.getElementById('stack-list').innerHTML = data.stack.map(s =>
+      `<div><span class="stack-dot"></span>${s}</div>`
+    ).join('');
+
+    document.getElementById('gallery-grid').innerHTML = [1, 2, 3].map(() => galleryItemMarkup(data.heroVisual)).join('');
+
+    document.getElementById('next-project-title').textContent = data.next.title;
+    document.getElementById('next-project-link').href = `project-detail.html?project=${data.next.key}`;
+
+    lucide.createIcons();
+  }
+
+  loadProject();
+  lucide.createIcons();
+
+  window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      document.getElementById('skel').classList.add('skel-hidden');
+      document.getElementById('real').classList.remove('skel-hidden');
+      lucide.createIcons();
+    }, 700);
+  });
+</script>
+
+</body>
+</html>
