@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Certificates and training completed by Andra Nooryanto, Informatics student at Universitas Bina Sarana Informatika (UBSI), Karawang.">
+<title>Certificates | Andra Nooryanto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  :root {
+    --tiffany: #81D8D0;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --glass-bg: rgba(30, 30, 30, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.08);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; -ms-overflow-style: none; scrollbar-width: none; }
+  *::-webkit-scrollbar { width: 0px; background: transparent; }
+  body {
+    background-color: #000; color: #fff; font-family: 'Inter', sans-serif;
+    font-weight: 400; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  }
+  a { text-decoration: none; color: inherit; }
+  button { font-family: inherit; cursor: pointer; color: inherit; }
+  ::selection { background-color: #81D8D0; color: #000000; }
+  ::-moz-selection { background-color: #81D8D0; color: #000000; }
+
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 10; }
+  @media (min-width: 768px) { .container { padding: 0 40px; } }
+
+  @keyframes fadeUp {
+    0% { opacity: 0; transform: translateY(20px) scale(0.98); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .fade-in-el { opacity: 0; animation: fadeUp 0.9s var(--ease) forwards; }
+
+  .ios-glass {
+    background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+  }
+
+  /* Background layer */
+  .bg-layer { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .blob-1 { position: absolute; top: -160px; left: -160px; width: 600px; height: 600px; border-radius: 50%; background: var(--tiffany); opacity: 0.07; filter: blur(120px); mix-blend-mode: screen; }
+  .blob-2 { position: absolute; bottom: -160px; right: -160px; width: 500px; height: 500px; border-radius: 50%; background: #1e3a8a; opacity: 0.1; filter: blur(120px); mix-blend-mode: screen; }
+
+  /* Nav */
+  .nav { position: fixed; top: 24px; left: 50%; transform: translateX(-50%); z-index: 50; width: 92%; max-width: 420px; }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; border-radius: 999px; padding: 8px; }
+  .nav-logo { width: 28px; height: 28px; border-radius: 50%; background: var(--tiffany); color: #000; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; margin-left: 4px; }
+  .nav-back { display: none; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 999px; color: rgba(255,255,255,0.6); font-size: 14px; transition: color 300ms var(--ease); }
+  @media (min-width: 640px) { .nav-back { display: inline-flex; } }
+  .nav-back:hover { color: #fff; }
+  .nav-contact { background: var(--tiffany); color: #000; font-size: 14px; font-weight: 500; padding: 8px 20px; border-radius: 999px; transition: opacity 300ms var(--ease); }
+  .nav-contact:hover { opacity: 0.9; }
+
+  /* Page header */
+  main.page { padding-top: 160px; padding-bottom: 96px; }
+  .crumb { display: flex; align-items: center; gap: 8px; font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 24px; }
+  .crumb a:hover { color: #fff; }
+  .crumb-current { color: var(--tiffany); }
+
+  .p-title {
+    font-size: 40px; font-weight: 600; letter-spacing: -0.02em; line-height: 1;
+    background: linear-gradient(to bottom, #fff, rgba(255,255,255,0.5));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  @media (min-width: 640px) { .p-title { font-size: 52px; } }
+  @media (min-width: 768px) { .p-title { font-size: 64px; } }
+  .p-desc { margin-top: 24px; color: rgba(255,255,255,0.6); font-weight: 300; max-width: 560px; font-size: 16px; line-height: 1.6; }
+  @media (min-width: 768px) { .p-desc { font-size: 18px; } }
+  .p-count { margin-top: 20px; font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--tiffany); }
+
+  /* Gallery */
+  .cert-grid { margin-top: 56px; display: grid; grid-template-columns: 1fr; gap: 32px 24px; align-items: start; }
+  @media (min-width: 640px) { .cert-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .cert-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .cert-card {
+    display: block; width: 100%; text-align: left; background: none; border: 0; padding: 0;
+    border-radius: 24px; outline-offset: 6px;
+  }
+  .cert-card:focus-visible { outline: 2px solid var(--tiffany); }
+  .cert-thumb {
+    position: relative; overflow: hidden; border-radius: 20px; aspect-ratio: 297 / 210;
+    background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border);
+    transition: border-color 400ms var(--ease), transform 400ms var(--ease);
+  }
+  .cert-thumb img {
+    width: 100%; height: 100%; display: block; object-fit: cover;
+    transition: transform 500ms var(--ease);
+  }
+  .cert-card:hover .cert-thumb img { transform: scale(1.03); }
+  .cert-card:hover .cert-thumb { border-color: rgba(129,216,208,0.35); }
+  .cert-view {
+    position: absolute; top: 12px; right: 12px; width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 300ms var(--ease);
+  }
+  .cert-card:hover .cert-view, .cert-card:focus-visible .cert-view { opacity: 1; }
+
+  .cert-info { padding: 14px 4px 0; }
+  .cert-type { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--tiffany); margin-bottom: 8px; }
+  .cert-title {
+    font-size: 17px; font-weight: 500; line-height: 1.35; letter-spacing: -0.01em;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .cert-meta { margin-top: 6px; font-size: 13px; color: rgba(255,255,255,0.5); font-weight: 300; line-height: 1.5; }
+
+  /* Modal */
+  .modal {
+    position: fixed; inset: 0; z-index: 100; display: none;
+    align-items: center; justify-content: center; padding: 16px;
+    background: rgba(0,0,0,0.72); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  }
+  .modal.open { display: flex; }
+  .modal-dialog {
+    position: relative; width: 100%; max-width: 1200px; max-height: calc(100vh - 32px);
+    overflow-y: auto; border-radius: 28px; display: grid; grid-template-columns: 1fr;
+    animation: fadeUp 0.5s var(--ease) both;
+  }
+  @media (min-width: 900px) {
+    .modal-dialog { grid-template-columns: minmax(0, 1fr) 360px; overflow: hidden; }
+  }
+  .modal-image-col { padding: 16px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.35); }
+  @media (min-width: 900px) { .modal-image-col { padding: 24px; } }
+  .modal-image-col img { width: 100%; max-height: calc(100vh - 80px); object-fit: contain; display: block; border-radius: 12px; }
+
+  .modal-detail { padding: 28px 24px 28px; display: flex; flex-direction: column; gap: 20px; }
+  @media (min-width: 900px) { .modal-detail { padding: 40px 28px 28px; overflow-y: auto; max-height: calc(100vh - 32px); } }
+  .modal-close {
+    position: absolute; top: 14px; right: 14px; width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; z-index: 5;
+    transition: background-color 300ms var(--ease);
+  }
+  .modal-close:hover { background: rgba(255,255,255,0.12); }
+  .modal-close:focus-visible, .modal-pdf:focus-visible { outline: 2px solid var(--tiffany); outline-offset: 2px; }
+
+  .modal-type { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--tiffany); padding-right: 44px; }
+  .modal-title { font-size: 24px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; margin-top: -8px; }
+  .modal-issuer { font-size: 14px; color: rgba(255,255,255,0.6); font-weight: 300; margin-top: -12px; line-height: 1.5; }
+
+  .detail-list { display: flex; flex-direction: column; gap: 14px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); }
+  .detail-row { display: flex; gap: 12px; align-items: flex-start; }
+  .detail-icon { color: var(--tiffany); flex-shrink: 0; margin-top: 2px; display: flex; }
+  .detail-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); }
+  .detail-value { font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.5; margin-top: 2px; word-break: break-word; }
+  .detail-value span { display: block; }
+
+  .modal-desc { font-size: 14px; color: rgba(255,255,255,0.6); font-weight: 300; line-height: 1.7; }
+  .modal-pdf {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; align-self: flex-start;
+    background: #fff; color: #000; font-size: 14px; font-weight: 500; padding: 12px 22px; border-radius: 999px;
+    transition: background-color 300ms var(--ease);
+  }
+  .modal-pdf:hover { background: rgba(255,255,255,0.9); }
+
+  /* Footer */
+  footer.page-footer { padding-bottom: 64px; margin-top: 40px; }
+  .footer-bottom-row {
+    display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 16px;
+    padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  @media (min-width: 640px) { .footer-bottom-row { flex-direction: row; } }
+  .footer-tag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.4); }
+  .footer-social { display: flex; align-items: center; gap: 20px; }
+  .footer-social a { color: rgba(255,255,255,0.4); transition: color 300ms var(--ease); display: flex; }
+  .footer-social a:hover { color: #fff; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fade-in-el, .modal-dialog { animation: none; opacity: 1; }
+    .cert-thumb img { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- BACKGROUND LAYER (z-0) -->
+  <div class="bg-layer">
+    <div class="blob-1"></div>
+    <div class="blob-2"></div>
+  </div>
+
+  <!-- NAV LAYER (fixed, z-50) -->
+  <nav class="nav">
+    <div class="nav-inner ios-glass">
+      <a href="../index.html" class="nav-logo" aria-label="Back to home">AN</a>
+      <a href="../index.html" class="nav-back">
+        <i data-lucide="arrow-left" style="width:14px;height:14px;"></i> Back to Home
+      </a>
+      <a href="../index.html#contact" class="nav-contact">Contact</a>
+    </div>
+  </nav>
+
+  <main class="page container">
+    <div class="crumb fade-in-el">
+      <a href="../index.html">Home</a>
+      <span>/</span>
+      <span class="crumb-current">Certificates</span>
+    </div>
+
+    <h1 class="p-title fade-in-el" style="animation-delay:.05s;">Certificates</h1>
+    <p class="p-desc fade-in-el" style="animation-delay:.1s;">Seminars, workshops, and training programs I have completed while studying Informatics. Select a certificate to see it in full size with its details.</p>
+    <p class="p-count fade-in-el" style="animation-delay:.15s;" id="cert-count"></p>
+
+    <section class="cert-grid" id="cert-grid" aria-label="Certificate gallery"></section>
+  </main>
+
+  <!-- MODAL -->
+  <div class="modal" id="cert-modal" aria-hidden="true">
+    <div class="modal-dialog ios-glass" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button type="button" class="modal-close ios-glass" id="modal-close" aria-label="Close certificate">
+        <i data-lucide="x" style="width:18px;height:18px;"></i>
+      </button>
+      <div class="modal-image-col">
+        <img id="modal-img" src="" alt="">
+      </div>
+      <div class="modal-detail">
+        <p class="modal-type" id="modal-type"></p>
+        <h2 class="modal-title" id="modal-title"></h2>
+        <p class="modal-issuer" id="modal-issuer"></p>
+        <div class="detail-list" id="modal-details"></div>
+        <p class="modal-desc" id="modal-desc"></p>
+        <a class="modal-pdf" id="modal-pdf" href="#" target="_blank" rel="noopener noreferrer">
+          <i data-lucide="file-text" style="width:16px;height:16px;"></i> Open original PDF
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="page-footer container">
+    <div class="footer-bottom-row">
+      <p class="footer-tag">Based in Karawang, Indonesia</p>
+      <div class="footer-social">
+        <a href="https://github.com/andra-gs" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+          <i data-lucide="github" style="width:16px;height:16px;"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* Certificate data. Add a new certificate by adding one entry here and
+       placing its files in ../assets/images/certificates/. Empty fields are hidden. */
+    const certificates = [
+      {
+        type: 'Certificate of Appreciation · Participant',
+        title: 'Web Pro Workshop: Build Your First AI-Assisted Website',
+        issuer: 'HIMASI UBSI PSDKU Karawang',
+        date: '14 Nov 2026',
+        description: 'Awarded for participation and enthusiasm as a participant in the Web Pro workshop "Build Your First AI-Assisted Website", held on 14 November 2026.',
+        signedBy: ['Reza Khaidyr Fahlevi (General Chair)', 'Abdussomad, M.Kom (HIMASI Advisor)'],
+        image: '../assets/images/certificates/himasi-web-pro-workshop.png',
+        pdf: '../assets/images/certificates/Sertifikat_Andra_Nooryanto_Workshop_Web_Programming.pdf'
+      },
+      {
+        type: 'E-Certificate · Participant',
+        title: 'Entrepreneur Seminar: From Campus to Business',
+        issuer: 'UBSI · BSI Entrepreneur Center',
+        date: '21 Oct 2026',
+        time: '12.00 – 16.00 WIB',
+        location: 'Aula UBSI Karawang',
+        speaker: 'Azis Muslim (Owner, Kebun Design)',
+        description: 'Participant in the Entrepreneur Seminar "From Campus to Business: Building the Entrepreneurial Mindset for the Future".',
+        signedBy: ['Adi Supriyatna, M.Kom (Vice Rector II for Non-Academic Affairs)', 'Mugi Raharjo, M.Kom (Event Chair)'],
+        image: '../assets/images/certificates/ubsi-entrepreneur-seminar.png',
+        pdf: '../assets/images/certificates/BEC-X-15260048-PSWE26.pdf'
+      },
+      {
+        type: 'Certificate of Appreciation · Completion',
+        title: 'Network Administration Bootcamp',
+        issuer: 'Jarvis Academy',
+        date: 'Issued Oct 2026',
+        period: 'July – October 2026',
+        credential: '07.0010/JRV-C/X/2026',
+        description: 'Successfully completed the Network Administration Bootcamp training program at Jarvis Academy.',
+        signedBy: ['April Rustianto M.T (Chairman, Jarvis Academy)'],
+        image: '../assets/images/certificates/jarvis-network-administration-bootcamp.png',
+        pdf: '../assets/images/certificates/Andra%20Nooryanto.pdf'
+      }
+    ];
+
+    /* Icons come from the Lucide CDN; the gallery must still work if it fails to load. */
+    function refreshIcons() { if (window.lucide) lucide.createIcons(); }
+
+    const grid = document.getElementById('cert-grid');
+    const modal = document.getElementById('cert-modal');
+    const closeBtn = document.getElementById('modal-close');
+    const pdfLink = document.getElementById('modal-pdf');
+    let lastFocused = null;
+
+    function el(tag, className, text) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text !== undefined) node.textContent = text;
+      return node;
+    }
+
+    function renderGallery() {
+      document.getElementById('cert-count').textContent =
+        certificates.length + (certificates.length === 1 ? ' certificate' : ' certificates');
+
+      certificates.forEach((cert, i) => {
+        const card = el('button', 'cert-card fade-in-el');
+        card.type = 'button';
+        card.style.animationDelay = (0.2 + i * 0.08) + 's';
+        card.setAttribute('aria-haspopup', 'dialog');
+        card.setAttribute('aria-label', 'View certificate: ' + cert.title);
+
+        const thumb = el('div', 'cert-thumb');
+        const img = el('img');
+        img.src = cert.image;
+        img.alt = 'Certificate: ' + cert.title + ', ' + cert.issuer;
+        img.loading = 'lazy';
+        thumb.appendChild(img);
+
+        const view = el('div', 'cert-view ios-glass');
+        const icon = el('i');
+        icon.setAttribute('data-lucide', 'maximize-2');
+        icon.style.cssText = 'width:16px;height:16px;';
+        view.appendChild(icon);
+        thumb.appendChild(view);
+
+        const info = el('div', 'cert-info');
+        info.appendChild(el('p', 'cert-type', cert.type));
+        info.appendChild(el('h2', 'cert-title', cert.title));
+        info.appendChild(el('p', 'cert-meta', [cert.issuer, cert.date].filter(Boolean).join(' · ')));
+
+        card.appendChild(thumb);
+        card.appendChild(info);
+        card.addEventListener('click', () => openModal(i, card));
+        grid.appendChild(card);
+      });
+      refreshIcons();
+    }
+
+    function addDetail(list, iconName, label, values) {
+      const items = [].concat(values || []).filter(Boolean);
+      if (!items.length) return;
+      const row = el('div', 'detail-row');
+      const icon = el('div', 'detail-icon');
+      const i = el('i');
+      i.setAttribute('data-lucide', iconName);
+      i.style.cssText = 'width:16px;height:16px;';
+      icon.appendChild(i);
+      const body = el('div');
+      body.appendChild(el('p', 'detail-label', label));
+      const value = el('div', 'detail-value');
+      items.forEach(v => value.appendChild(el('span', '', v)));
+      body.appendChild(value);
+      row.appendChild(icon);
+      row.appendChild(body);
+      list.appendChild(row);
+    }
+
+    function openModal(index, trigger) {
+      const cert = certificates[index];
+      lastFocused = trigger || document.activeElement;
+
+      const img = document.getElementById('modal-img');
+      img.src = cert.image;
+      img.alt = 'Certificate: ' + cert.title + ', ' + cert.issuer;
+
+      document.getElementById('modal-type').textContent = cert.type || '';
+      document.getElementById('modal-title').textContent = cert.title;
+      document.getElementById('modal-issuer').textContent = cert.issuer || '';
+
+      const list = document.getElementById('modal-details');
+      list.replaceChildren();
+      addDetail(list, 'calendar', 'Date', cert.date);
+      addDetail(list, 'calendar-range', 'Program period', cert.period);
+      addDetail(list, 'clock', 'Time', cert.time);
+      addDetail(list, 'map-pin', 'Location', cert.location);
+      addDetail(list, 'mic', 'Speaker', cert.speaker);
+      addDetail(list, 'hash', 'Certificate number', cert.credential);
+      addDetail(list, 'pen-line', 'Signed by', cert.signedBy);
+      list.style.display = list.children.length ? '' : 'none';
+
+      const desc = document.getElementById('modal-desc');
+      desc.textContent = cert.description || '';
+      desc.style.display = cert.description ? '' : 'none';
+
+      if (cert.pdf) { pdfLink.href = cert.pdf; pdfLink.style.display = ''; }
+      else { pdfLink.style.display = 'none'; }
+
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      refreshIcons();
+      closeBtn.focus();
+    }
+
+    function closeModal() {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (lastFocused && lastFocused.focus) lastFocused.focus();
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', (e) => {
+      if (!modal.classList.contains('open')) return;
+      if (e.key === 'Escape') { closeModal(); return; }
+      if (e.key === 'Tab') {
+        const focusables = [closeBtn].concat(pdfLink.style.display === 'none' ? [] : [pdfLink]);
+        const first = focusables[0], last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+
+    refreshIcons();
+    renderGallery();
+  </script>
+</body>
+</html>
